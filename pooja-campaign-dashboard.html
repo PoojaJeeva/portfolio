@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pooja J — Campaign Performance Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #080808;
+            --bg-card: #111111;
+            --bg-card-hover: #161616;
+            --border: rgba(255,255,255,0.06);
+            --red: #e8002d;
+            --blue: #4fc3f7;
+            --green: #00e676;
+            --purple: #a29bfe;
+            --yellow: #fdcb6e;
+            --pink: #fd79a8;
+            --text: #ffffff;
+            --text-secondary: rgba(255,255,255,0.5);
+            --text-muted: rgba(255,255,255,0.28);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            padding: 52px 60px 40px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-eyebrow::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--red);
+        }
+
+        .header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .header h1 span { color: var(--text-secondary); font-weight: 300; }
+
+        .header-meta { text-align: right; }
+        .header-meta .meta-label { font-size: 11px; color: var(--text-muted); margin-bottom: 5px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .header-meta .meta-value { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+        .header-meta .meta-value span { color: var(--text); font-weight: 700; }
+
+        /* ── HERO STATS ── */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat {
+            padding: 38px 32px;
+            border-right: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+
+        .stat:hover { background: rgba(255,255,255,0.02); }
+        .stat:last-child { border-right: none; }
+
+        .stat-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        .stat.active .stat-bar { transform: scaleX(1); }
+
+        .stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .stat-num {
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-context {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ── SECTION HEADER ── */
+        .section-head {
+            margin-bottom: 32px;
+        }
+
+        .section-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 5px;
+        }
+
+        .section-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── CHART GRID ── */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chart-panel {
+            padding: 44px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chart-panel:nth-child(even) { border-right: none; }
+        .chart-panel:nth-last-child(-n+2) { border-bottom: none; }
+
+        .chart-wrap {
+            position: relative;
+            height: 260px;
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 32%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .donut-center-num {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .donut-center-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── CAMPAIGN CARDS ── */
+        .cards-section {
+            padding: 52px 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cards-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 36px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-accent {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .card-glow {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            opacity: 0.5;
+        }
+
+        .card-tag {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .card-name {
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 28px;
+        }
+
+        .card-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .metric-label {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-top: 22px;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── CHANNEL TABLE ── */
+        .table-section {
+            padding: 52px 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .perf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 36px;
+        }
+
+        .perf-table th {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 0 0 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .perf-table th:not(:first-child) { text-align: right; }
+
+        .perf-table td {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .perf-table td:not(:first-child) { text-align: right; }
+        .perf-table tr:last-child td { border-bottom: none; }
+        .perf-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+        .ch-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .ch-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .bar-track {
+            width: 100px;
+            height: 3px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .rate-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .rate-high { background: rgba(0,230,118,0.1); color: var(--green); }
+        .rate-mid  { background: rgba(79,195,247,0.1); color: var(--blue); }
+        .rate-low  { background: rgba(255,255,255,0.05); color: var(--text-secondary); }
+
+        /* ── QUOTE STRIP ── */
+        .quotes-strip {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .quote-panel {
+            padding: 44px 52px;
+            border-right: 1px solid var(--border);
+            position: relative;
+        }
+
+        .quote-panel:last-child { border-right: none; }
+
+        .quote-mark {
+            font-size: 64px;
+            line-height: 1;
+            color: rgba(255,255,255,0.06);
+            font-family: Georgia, serif;
+            position: absolute;
+            top: 28px;
+            left: 44px;
+        }
+
+        .quote-text {
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 20px;
+            padding-top: 16px;
+        }
+
+        .quote-text em {
+            color: var(--text);
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        .quote-author {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .quote-author span {
+            color: var(--red);
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            padding: 28px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-name {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .footer-title {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+        }
+
+        .footer-right {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade { opacity: 0; }
+        .fade.visible { animation: fadeUp 0.7s ease forwards; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1100px) {
+            .stats-strip { grid-template-columns: repeat(3, 1fr); }
+            .stat:nth-child(3) { border-right: none; }
+            .stat:nth-child(4) { border-top: 1px solid var(--border); }
+            .chart-grid { grid-template-columns: 1fr; }
+            .chart-panel { border-right: none !important; }
+            .cards-row { grid-template-columns: 1fr; }
+            .quotes-strip { grid-template-columns: 1fr; }
+            .quote-panel { border-right: none; border-bottom: 1px solid var(--border); }
+            .header { flex-direction: column; gap: 20px; align-items: flex-start; }
+            .header-meta { text-align: left; }
+            .stats-strip { grid-template-columns: repeat(2, 1fr); }
+            .stat:nth-child(2n) { border-right: none; }
+            .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HEADER ────────────────────────────────────── -->
+<header class="header">
+    <div>
+        <div class="header-eyebrow">Campaign Performance Dashboard</div>
+        <h1>Multi-Channel Analytics <span>Overview</span></h1>
+    </div>
+    <div class="header-meta">
+        <div class="meta-label">Company</div>
+        <div class="meta-value"><span>Laser Photonics</span> · NASDAQ: LASE</div>
+        <div class="meta-value" style="margin-top:6px;font-weight:400;color:var(--text-muted);font-size:12px;">Jan 1, 2025 – Jun 5, 2026</div>
+    </div>
+</header>
+
+<!-- ── HERO STATS ─────────────────────────────────── -->
+<div class="stats-strip">
+    <div class="stat">
+        <div class="stat-bar" style="background:var(--red)"></div>
+        <div class="stat-label">Leads Generated</div>
+        <div class="stat-num" style="color:var(--red)" data-target="40479" data-suffix="">0</div>
+        <div class="stat-context">form fills · main website</div>
+    </div>
+    <div class="stat">
+        <div class="stat-bar" style="background:var(--blue)"></div>
+        <div class="stat-label">Total Sessions</div>
+        <div class="stat-num" style="color:var(--blue)" data-target="1379870" data-suffix="">0</div>
+        <div class="stat-context">across both web properties</div>
+    </div>
+    <div class="stat">
+        <div class="stat-bar" style="background:var(--green)"></div>
+        <div class="stat-label">Cost Per Lead</div>
+        <div class="stat-num" style="color:var(--green)" data-target="4.42" data-prefix="$" data-decimal>$0.00</div>
+        <div class="stat-context">Microsoft Audience Ads</div>
+    </div>
+    <div class="stat">
+        <div class="stat-bar" style="background:var(--purple)"></div>
+        <div class="stat-label">Impressions Managed</div>
+        <div class="stat-num" style="color:var(--purple)" data-target="68" data-suffix="M+">0</div>
+        <div class="stat-context">all paid channels combined</div>
+    </div>
+    <div class="stat">
+        <div class="stat-bar" style="background:var(--yellow)"></div>
+        <div class="stat-label">Microsoft Ads CTR</div>
+        <div class="stat-num" style="color:var(--yellow)" data-target="11.22" data-suffix="%" data-decimal>0%</div>
+        <div class="stat-context">vs. 2–3% industry average</div>
+    </div>
+    <div class="stat">
+        <div class="stat-bar" style="background:var(--pink)"></div>
+        <div class="stat-label">Watchlist Growth</div>
+        <div class="stat-num" style="color:var(--pink)" data-target="66" data-suffix="×">0</div>
+        <div class="stat-context">Stocktwits · 35 days</div>
+    </div>
+</div>
+
+<!-- ── CHARTS ─────────────────────────────────────── -->
+<div class="chart-grid">
+
+    <!-- Sessions by Channel -->
+    <div class="chart-panel fade">
+        <div class="section-head">
+            <div class="section-eyebrow">IR Website · 626,741 Total Sessions</div>
+            <div class="section-title">Sessions by Channel</div>
+            <div class="section-desc">Traffic distribution across acquisition channels on the Investor Relations property</div>
+        </div>
+        <div class="chart-wrap">
+            <canvas id="sessionsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Leads by Channel -->
+    <div class="chart-panel fade">
+        <div class="section-head">
+            <div class="section-eyebrow">Main Website · 40,479 Total Leads</div>
+            <div class="section-title">Leads by Channel</div>
+            <div class="section-desc">Form fill conversions attributed by acquisition channel</div>
+        </div>
+        <div class="chart-wrap">
+            <canvas id="leadsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- IR Downloads Donut -->
+    <div class="chart-panel fade">
+        <div class="section-head">
+            <div class="section-eyebrow">IR Website · Investor Engagement</div>
+            <div class="section-title">Presentation Downloads by Channel</div>
+            <div class="section-desc">3,360 investor deck downloads — channel-level attribution</div>
+        </div>
+        <div class="chart-wrap" style="position:relative">
+            <canvas id="downloadsChart"></canvas>
+            <div class="donut-center">
+                <div class="donut-center-num">3,360</div>
+                <div class="donut-center-label">Downloads</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conversion Rate -->
+    <div class="chart-panel fade">
+        <div class="section-head">
+            <div class="section-eyebrow">Main Website · Channel Quality</div>
+            <div class="section-title">Lead Conversion Rate by Channel</div>
+            <div class="section-desc">% of sessions that resulted in a qualified form fill submission</div>
+        </div>
+        <div class="chart-wrap">
+            <canvas id="convChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── CAMPAIGN CARDS ─────────────────────────────── -->
+<section class="cards-section fade">
+    <div class="section-head">
+        <div class="section-eyebrow">Paid Campaigns</div>
+        <div class="section-title">Campaign Spotlights</div>
+        <div class="section-desc">Individual campaign performance across platforms</div>
+    </div>
+
+    <div class="cards-row">
+
+        <!-- Microsoft Leads Campaign -->
+        <div class="card">
+            <div class="card-glow" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+            <div class="card-accent" style="background:var(--blue)"></div>
+            <div class="card-tag">Microsoft Advertising · Audience Ads</div>
+            <div class="card-name">Laser Photonics<br>Leads Campaign</div>
+            <div class="card-metrics">
+                <div>
+                    <div class="metric-label">CTR</div>
+                    <div class="metric-value" style="color:var(--blue)">11.22%</div>
+                </div>
+                <div>
+                    <div class="metric-label">Avg. CPC</div>
+                    <div class="metric-value" style="color:var(--green)">$0.07</div>
+                </div>
+                <div>
+                    <div class="metric-label">Clicks</div>
+                    <div class="metric-value">74,407</div>
+                </div>
+                <div>
+                    <div class="metric-label">Conversions</div>
+                    <div class="metric-value">1,260</div>
+                </div>
+                <div>
+                    <div class="metric-label">Spend</div>
+                    <div class="metric-value">$5,565</div>
+                </div>
+                <div>
+                    <div class="metric-label">Cost Per Lead</div>
+                    <div class="metric-value" style="color:var(--green)">$4.42</div>
+                </div>
+            </div>
+            <div class="pill" style="background:rgba(79,195,247,0.1);color:var(--blue);border:1px solid rgba(79,195,247,0.2)">↑ Exceeded benchmark CTR</div>
+        </div>
+
+        <!-- Stocktwits -->
+        <div class="card">
+            <div class="card-glow" style="background:linear-gradient(90deg,var(--purple),transparent)"></div>
+            <div class="card-accent" style="background:var(--purple)"></div>
+            <div class="card-tag">Stocktwits · Nov 6 – Dec 11, 2025</div>
+            <div class="card-name">$LASE Investor<br>Awareness Campaign</div>
+            <div class="card-metrics">
+                <div>
+                    <div class="metric-label">Impressions</div>
+                    <div class="metric-value" style="color:var(--purple)">875K</div>
+                </div>
+                <div>
+                    <div class="metric-label">CTR</div>
+                    <div class="metric-value" style="color:var(--purple)">0.16%</div>
+                </div>
+                <div>
+                    <div class="metric-label">Clicks</div>
+                    <div class="metric-value">1,369</div>
+                </div>
+                <div>
+                    <div class="metric-label">Watchlist Start</div>
+                    <div class="metric-value">13</div>
+                </div>
+                <div>
+                    <div class="metric-label">Watchlist End</div>
+                    <div class="metric-value" style="color:var(--purple)">864</div>
+                </div>
+                <div>
+                    <div class="metric-label">Growth</div>
+                    <div class="metric-value" style="color:var(--purple)">66×</div>
+                </div>
+            </div>
+            <div class="pill" style="background:rgba(162,155,254,0.1);color:var(--purple);border:1px solid rgba(162,155,254,0.2)">↑ Above platform CTR benchmark</div>
+        </div>
+
+        <!-- LASE-Q12026 Display -->
+        <div class="card">
+            <div class="card-glow" style="background:linear-gradient(90deg,var(--red),transparent)"></div>
+            <div class="card-accent" style="background:var(--red)"></div>
+            <div class="card-tag">Microsoft Advertising · Programmatic Display</div>
+            <div class="card-name">LASE-Q12026<br>Display Campaign</div>
+            <div class="card-metrics">
+                <div>
+                    <div class="metric-label">Impressions</div>
+                    <div class="metric-value" style="color:var(--red)">67.4M</div>
+                </div>
+                <div>
+                    <div class="metric-label">Clicks</div>
+                    <div class="metric-value">32,836</div>
+                </div>
+                <div>
+                    <div class="metric-label">Spend</div>
+                    <div class="metric-value">$6,372</div>
+                </div>
+                <div>
+                    <div class="metric-label">Annual Budget</div>
+                    <div class="metric-value" style="color:var(--red)">$430K+</div>
+                </div>
+                <div>
+                    <div class="metric-label">Channels</div>
+                    <div class="metric-value">12+</div>
+                </div>
+                <div>
+                    <div class="metric-label">Properties</div>
+                    <div class="metric-value">2</div>
+                </div>
+            </div>
+            <div class="pill" style="background:rgba(232,0,45,0.1);color:#ff6b6b;border:1px solid rgba(232,0,45,0.2)">↑ National broadcast reach</div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── CHANNEL PERFORMANCE TABLE ─────────────────── -->
+<section class="table-section fade">
+    <div class="section-head">
+        <div class="section-eyebrow">Main Website · Full Channel Breakdown</div>
+        <div class="section-title">Lead Performance by Acquisition Channel</div>
+        <div class="section-desc">Sessions, lead volume, and conversion rate across all tracked channels</div>
+    </div>
+
+    <table class="perf-table">
+        <thead>
+            <tr>
+                <th>Channel</th>
+                <th>Sessions</th>
+                <th>Leads</th>
+                <th>Conv. Rate</th>
+                <th style="text-align:right;padding-right:0">Volume</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:var(--blue)"></div>Paid Search</div></td>
+                <td>47,287</td>
+                <td><strong>10,757</strong></td>
+                <td><span class="rate-tag rate-high">4.96%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div></div></td>
+            </tr>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:rgba(255,255,255,0.6)"></div>Direct</div></td>
+                <td>268,689</td>
+                <td><strong>9,773</strong></td>
+                <td><span class="rate-tag rate-low">1.13%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:91%;background:rgba(255,255,255,0.4)"></div></div></div></td>
+            </tr>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:var(--green)"></div>Organic Search</div></td>
+                <td>91,028</td>
+                <td><strong>9,646</strong></td>
+                <td><span class="rate-tag rate-high">4.89%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--green)"></div></div></div></td>
+            </tr>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:var(--pink)"></div>Referral</div></td>
+                <td>28,446</td>
+                <td><strong>4,355</strong></td>
+                <td><span class="rate-tag rate-high">8.16%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--pink)"></div></div></div></td>
+            </tr>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:var(--yellow)"></div>Email</div></td>
+                <td>225,712</td>
+                <td><strong>967</strong></td>
+                <td><span class="rate-tag rate-low">0.34%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--yellow)"></div></div></div></td>
+            </tr>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:var(--purple)"></div>Cross-network</div></td>
+                <td>2,109</td>
+                <td><strong>675</strong></td>
+                <td><span class="rate-tag rate-high">13.85%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:6%;background:var(--purple)"></div></div></div></td>
+            </tr>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:#e17055"></div>Organic Video</div></td>
+                <td>1,181</td>
+                <td><strong>245</strong></td>
+                <td><span class="rate-tag rate-mid">6.52%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:2%;background:#e17055"></div></div></div></td>
+            </tr>
+            <tr>
+                <td><div class="ch-name"><div class="ch-dot" style="background:rgba(255,255,255,0.2)"></div>Organic Social</div></td>
+                <td>2,955</td>
+                <td><strong>207</strong></td>
+                <td><span class="rate-tag rate-mid">4.16%</span></td>
+                <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill" style="width:2%;background:rgba(255,255,255,0.3)"></div></div></div></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ── QUOTES ─────────────────────────────────────── -->
+<div class="quotes-strip">
+    <div class="quote-panel fade">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Her <em>structured, data-driven methods</em> quickly became a benchmark within the company. Within just two months, she was already providing valuable input on product portfolio expansion strategies.</div>
+        <div class="quote-author"><span>Patricia Colonhesi</span> · Marketing Director, Laser Photonics</div>
+    </div>
+    <div class="quote-panel fade">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">She was able to <em>determine the best course of action</em> for reintroducing a category of products to the market, driving a significant increase in leads almost immediately — <em>a campaign that outperformed her goal significantly.</em></div>
+        <div class="quote-author"><span>Al Kasishke IV</span> · Product Marketing Manager, Laser Photonics</div>
+    </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────── -->
+<footer class="footer">
+    <div class="footer-left">
+        <div>
+            <div class="footer-name">Pooja J</div>
+            <div class="footer-title">Product Marketing Manager</div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-title">Data sourced from Google Analytics 4 · Microsoft Advertising · Stocktwits Campaign Report</div>
+    </div>
+    <div class="footer-right">Jan 2025 – Jun 2026</div>
+</footer>
+
+<script>
+// ── COUNTER ANIMATION ──────────────────────────────
+function runCounter(el) {
+    const target  = parseFloat(el.dataset.target);
+    const prefix  = el.dataset.prefix || '';
+    const suffix  = el.dataset.suffix || '';
+    const decimal = el.hasAttribute('data-decimal');
+    const dur     = 2200;
+    const start   = performance.now();
+
+    function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 4);
+        const v = target * e;
+        el.textContent = prefix + (decimal ? v.toFixed(2) : Math.round(v).toLocaleString()) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = prefix + (decimal ? target.toFixed(2) : target.toLocaleString()) + suffix;
+    }
+
+    requestAnimationFrame(tick);
+}
+
+// ── INTERSECTION OBSERVER ─────────────────────────
+const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const el = en.target;
+
+        // counters
+        if (el.classList.contains('stat')) {
+            const num = el.querySelector('[data-target]');
+            if (num && !num.dataset.done) {
+                num.dataset.done = '1';
+                runCounter(num);
+            }
+            el.classList.add('active');
+        }
+
+        // fade sections
+        if (el.classList.contains('fade') && !el.classList.contains('visible')) {
+            el.classList.add('visible');
+        }
+
+        io.unobserve(el);
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.stat, .fade').forEach(el => io.observe(el));
+
+// ── CHART DEFAULTS ────────────────────────────────
+Chart.defaults.color = 'rgba(255,255,255,0.35)';
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size   = 11;
+
+const grid    = 'rgba(255,255,255,0.05)';
+const tooltip = {
+    backgroundColor : '#141414',
+    borderColor     : 'rgba(255,255,255,0.08)',
+    borderWidth     : 1,
+    padding         : 12,
+    titleColor      : '#fff',
+    bodyColor       : 'rgba(255,255,255,0.55)',
+    cornerRadius    : 8,
+    displayColors   : true,
+    boxWidth        : 8,
+    boxHeight       : 8,
+    boxPadding      : 4,
+    titleFont       : { weight:'700', size:12 },
+    bodyFont        : { size:12 },
+};
+
+// ── CHART 1 · Sessions by Channel ────────────────
+new Chart(document.getElementById('sessionsChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Direct','Email','Referral','Organic Social','Display','Paid Video','Organic Search'],
+        datasets: [{
+            data: [113806, 112125, 102725, 83182, 79024, 61766, 28687],
+            backgroundColor: [
+                'rgba(255,255,255,0.65)',
+                'rgba(253,203,110,0.7)',
+                'rgba(253,121,168,0.7)',
+                'rgba(0,230,118,0.7)',
+                'rgba(79,195,247,0.7)',
+                'rgba(232,0,45,0.7)',
+                'rgba(162,155,254,0.7)',
+            ],
+            borderRadius: 5,
+            borderSkipped: false,
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { ...tooltip, callbacks: { label: c => '  ' + c.raw.toLocaleString() + ' sessions' } }
+        },
+        scales: {
+            x: { grid: { color: grid }, border: { display: false }, ticks: { callback: v => v >= 1000 ? (v/1000|0)+'K' : v } },
+            y: { grid: { display: false }, border: { display: false }, ticks: { font: { weight:'600' } } }
+        }
+    }
+});
+
+// ── CHART 2 · Leads by Channel ───────────────────
+new Chart(document.getElementById('leadsChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Paid Search','Direct','Organic Search','Referral','Unassigned','Email','Cross-net','Org. Video'],
+        datasets: [{
+            data: [10757, 9773, 9646, 4355, 3787, 967, 675, 245],
+            backgroundColor: [
+                'rgba(79,195,247,0.8)',
+                'rgba(255,255,255,0.5)',
+                'rgba(0,230,118,0.8)',
+                'rgba(253,121,168,0.8)',
+                'rgba(255,255,255,0.2)',
+                'rgba(253,203,110,0.6)',
+                'rgba(162,155,254,0.8)',
+                'rgba(225,112,85,0.8)',
+            ],
+            borderRadius: 5,
+            borderSkipped: false,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { ...tooltip, callbacks: { label: c => '  ' + c.raw.toLocaleString() + ' leads' } }
+        },
+        scales: {
+            x: { grid: { display: false }, border: { display: false }, ticks: { font: { size:10 }, maxRotation: 30 } },
+            y: { grid: { color: grid }, border: { display: false }, ticks: { callback: v => v >= 1000 ? (v/1000|0)+'K' : v } }
+        }
+    }
+});
+
+// ── CHART 3 · Downloads Donut ────────────────────
+new Chart(document.getElementById('downloadsChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Referral','Display','Paid Video','Direct','Organic Social','Organic Search','Other'],
+        datasets: [{
+            data: [872, 616, 456, 419, 359, 255, 383],
+            backgroundColor: [
+                'rgba(253,121,168,0.85)',
+                'rgba(79,195,247,0.85)',
+                'rgba(232,0,45,0.85)',
+                'rgba(255,255,255,0.65)',
+                'rgba(0,230,118,0.85)',
+                'rgba(162,155,254,0.85)',
+                'rgba(255,255,255,0.12)',
+            ],
+            borderWidth: 0,
+            hoverOffset: 10,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: { padding: 14, usePointStyle: true, pointStyle: 'circle', font: { size:11 } }
+            },
+            tooltip: { ...tooltip, callbacks: { label: c => '  ' + c.raw.toLocaleString() + ' downloads' } }
+        }
+    }
+});
+
+// ── CHART 4 · Conversion Rate ────────────────────
+new Chart(document.getElementById('convChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Cross-network','Referral','Organic Video','Paid Search','Organic Search','Organic Social','Direct','Email'],
+        datasets: [{
+            data: [13.85, 8.16, 6.52, 4.96, 4.89, 4.16, 1.13, 0.34],
+            backgroundColor: [
+                'rgba(162,155,254,0.85)',
+                'rgba(253,121,168,0.85)',
+                'rgba(225,112,85,0.85)',
+                'rgba(79,195,247,0.85)',
+                'rgba(0,230,118,0.85)',
+                'rgba(0,230,118,0.5)',
+                'rgba(255,255,255,0.3)',
+                'rgba(253,203,110,0.3)',
+            ],
+            borderRadius: 5,
+            borderSkipped: false,
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { ...tooltip, callbacks: { label: c => '  ' + c.raw + '% lead conversion rate' } }
+        },
+        scales: {
+            x: { grid: { color: grid }, border: { display: false }, ticks: { callback: v => v + '%' } },
+            y: { grid: { display: false }, border: { display: false }, ticks: { font: { weight:'600' } } }
+        }
+    }
+});
+</script>
+</body>
+</html>

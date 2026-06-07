@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MassMetric Pricing Framework</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #09090b;
+            --bg-card: #111113;
+            --bg-card-2: #16161a;
+            --border: rgba(255,255,255,0.07);
+            --border-light: rgba(255,255,255,0.04);
+            --text: #fafafa;
+            --text-secondary: rgba(255,255,255,0.5);
+            --text-muted: rgba(255,255,255,0.26);
+            --green: #4ade80;
+            --green-bg: rgba(74,222,128,0.08);
+            --green-border: rgba(74,222,128,0.15);
+            --blue: #60a5fa;
+            --blue-bg: rgba(96,165,250,0.08);
+            --blue-border: rgba(96,165,250,0.15);
+            --amber: #fbbf24;
+            --amber-bg: rgba(251,191,36,0.08);
+            --purple: #a78bfa;
+            --purple-bg: rgba(167,139,250,0.08);
+            --purple-border: rgba(167,139,250,0.15);
+            --indigo: #818cf8;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+
+        .portfolio-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 20px;
+            z-index: 100;
+        }
+
+        .page-header {
+            padding: 60px 80px 52px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(99,102,241,0.12), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-context {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-context::before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 1px;
+            background: var(--amber);
+        }
+
+        .page-header h1 {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .page-header h1 em {
+            color: var(--text-muted);
+            font-style: normal;
+            font-weight: 300;
+        }
+
+        .header-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 560px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 32px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .meta-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .context-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 80px;
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+
+        .context-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .context-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .context-text-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .context-text-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .rationale-section {
+            padding: 52px 80px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 32px;
+        }
+
+        .rationale-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .rationale-card {
+            background: var(--bg-card-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .rationale-num {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            color: var(--blue);
+            margin-bottom: 4px;
+        }
+
+        .rationale-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .rationale-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .pricing-section {
+            padding: 60px 80px;
+        }
+
+        .model-choice {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px 32px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .model-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.07);
+            color: var(--text-secondary);
+            padding: 5px 12px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .model-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .model-desc strong { color: var(--text); }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .tier {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: border-color 0.25s;
+        }
+
+        .tier:hover { border-color: rgba(255,255,255,0.14); }
+
+        .tier.featured {
+            border-color: rgba(129,140,248,0.35);
+            box-shadow: 0 0 0 1px rgba(129,140,248,0.15);
+        }
+
+        .tier-header {
+            padding: 28px 28px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tier.featured .tier-header {
+            background: linear-gradient(135deg, #1e1b4b, #16162e);
+        }
+
+        .tier-badge {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .tier:not(.featured) .tier-badge { color: var(--text-muted); }
+        .tier.featured .tier-badge { color: rgba(255,255,255,0.45); }
+
+        .tier-name {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .tier-tagline {
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        .tier.featured .tier-tagline { color: rgba(255,255,255,0.5); }
+
+        .tier-pricing {
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .price-seats {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .price-divider {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .price-model {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .tier-seats {
+            padding: 16px 28px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card-2);
+        }
+
+        .seats-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .seats-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .tier-features {
+            padding: 24px 28px;
+        }
+
+        .feature-group-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            margin-top: 20px;
+        }
+
+        .feature-group-label:first-child { margin-top: 0; }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .feature-item .check {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .check-blue   { background: var(--blue-bg);   color: var(--blue); }
+        .check-green  { background: var(--green-bg);  color: var(--green); }
+        .check-purple { background: var(--purple-bg); color: var(--purple); }
+
+        .feature-item strong { color: var(--text); font-weight: 600; }
+
+        .na-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .na-dot {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            color: var(--border);
+        }
+
+        .result-strip {
+            margin: 0 80px 60px;
+            background: linear-gradient(135deg, rgba(129,140,248,0.08), rgba(96,165,250,0.04));
+            border: 1px solid rgba(129,140,248,0.18);
+            border-radius: 16px;
+            padding: 40px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+        }
+
+        .result-left { flex: 1; }
+
+        .result-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .result-headline {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            line-height: 1.4;
+        }
+
+        .result-headline em {
+            font-style: normal;
+            color: var(--indigo);
+        }
+
+        .result-metrics {
+            display: flex;
+            gap: 48px;
+        }
+
+        .result-metric { text-align: center; }
+
+        .result-num {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .result-metric-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .page-footer {
+            padding: 28px 80px 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-left { font-size: 12px; color: var(--text-muted); }
+        .footer-left strong { color: var(--text-secondary); font-weight: 600; }
+        .footer-right { font-size: 11px; color: var(--text-muted); }
+
+        .footer-disclaimer {
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            max-width: 780px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade { opacity: 0; }
+        .fade.visible { animation: fadeUp 0.55s ease forwards; }
+    </style>
+</head>
+<body>
+
+<div class="portfolio-badge">Portfolio Sample</div>
+
+<div class="page-header">
+    <div class="header-context">Work Sample · Pricing Strategy</div>
+    <h1>Subscription + Seat-Based<br><em>Pricing Framework</em></h1>
+    <p class="header-desc">A go-to-market pricing model designed to stabilize recurring revenue, increase average contract value, and create natural expansion paths across team growth stages.</p>
+    <div class="header-meta">
+        <div class="meta-item">
+            <div class="meta-label">Company</div>
+            <div class="meta-value">MassMetric</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Role</div>
+            <div class="meta-value">Associate PMM, Pricing Lead</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Outcome</div>
+            <div class="meta-value">+15% ACV Growth</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Period</div>
+            <div class="meta-value">Jun 2023 to Aug 2024</div>
+        </div>
+    </div>
+</div>
+
+<div class="context-bar">
+    <div class="context-item">
+        <div class="context-icon" style="background:var(--blue-bg)">📊</div>
+        <div>
+            <div class="context-text-label">Platform Type</div>
+            <div class="context-text-value">B2B SaaS · AI Demand-to-Revenue</div>
+        </div>
+    </div>
+    <div class="context-item">
+        <div class="context-icon" style="background:var(--green-bg)">🎯</div>
+        <div>
+            <div class="context-text-label">Model Launched</div>
+            <div class="context-text-value">Subscription + Seat-Based Hybrid</div>
+        </div>
+    </div>
+    <div class="context-item">
+        <div class="context-icon" style="background:var(--purple-bg)">⚡</div>
+        <div>
+            <div class="context-text-label">Strategic Goal</div>
+            <div class="context-text-value">Stabilize ARR · Expand ACV · Reduce Churn Risk</div>
+        </div>
+    </div>
+</div>
+
+<div class="rationale-section fade">
+    <div class="section-eyebrow">Why Seat-Based and Subscription</div>
+    <div class="section-title">The Strategic Rationale</div>
+    <div class="rationale-grid">
+        <div class="rationale-card">
+            <div class="rationale-num">01</div>
+            <div class="rationale-label">Predictable Revenue</div>
+            <div class="rationale-desc">Usage-based models created ARR volatility during slow quarters. A seat-based subscription tied contract value to team size, a more stable growth signal, creating month-over-month revenue predictability.</div>
+        </div>
+        <div class="rationale-card">
+            <div class="rationale-num">02</div>
+            <div class="rationale-label">Natural Expansion Path</div>
+            <div class="rationale-desc">As customers hired, they needed more seats. This created organic upsell moments without requiring sales intervention, embedding expansion directly into the customer's growth motion.</div>
+        </div>
+        <div class="rationale-card">
+            <div class="rationale-num">03</div>
+            <div class="rationale-label">ACV Alignment</div>
+            <div class="rationale-desc">Per-seat pricing aligned cost with value received. Larger teams using more of the platform paid proportionally more, increasing ACV without changing the perceived price-per-user for buyers.</div>
+        </div>
+    </div>
+</div>
+
+<div class="pricing-section fade">
+    <div class="section-eyebrow">Pricing Architecture</div>
+    <div class="section-title">Three-Tier Subscription Model</div>
+
+    <div class="model-choice">
+        <div class="model-tag">Model Decision</div>
+        <div class="model-desc">Annual subscription base with <strong>per-seat add-ons</strong> above each tier's included seat count. Monthly billing available at a 15% premium. Enterprise contracts structured as custom annual agreements with volume seat blocks.</div>
+    </div>
+
+    <div class="tiers-grid">
+
+        <div class="tier">
+            <div class="tier-header">
+                <div class="tier-badge">Tier 01</div>
+                <div class="tier-name">Starter</div>
+                <div class="tier-tagline">For early-stage B2B teams building their first demand engine. Core tools, fast setup, low friction to value.</div>
+            </div>
+            <div class="tier-pricing">
+                <div class="price-seats">Up to 5 seats</div>
+                <div class="price-divider">·</div>
+                <div class="price-model">Annual subscription</div>
+            </div>
+            <div class="tier-seats">
+                <div class="seats-label">Additional Seats</div>
+                <div class="seats-value">Per-seat add-on, billed annually</div>
+            </div>
+            <div class="tier-features">
+                <div class="feature-group-label">Core Platform</div>
+                <div class="feature-item"><div class="check check-blue">✓</div><div><strong>MassFront</strong>: Digital experience platform</div></div>
+                <div class="feature-item"><div class="check check-blue">✓</div><div><strong>MassSignal</strong>: Omnichannel campaign orchestration (3 channels)</div></div>
+                <div class="feature-item"><div class="check check-blue">✓</div><div><strong>MassOptimize</strong>: SEO performance tools</div></div>
+                <div class="feature-group-label">Data and Intelligence</div>
+                <div class="feature-item"><div class="check check-blue">✓</div><div>Access to <strong>10M B2B records</strong> via MassEnrich</div></div>
+                <div class="na-item"><div class="na-dot">·</div><div>MassCompete (Competitive Intelligence)</div></div>
+                <div class="na-item"><div class="na-dot">·</div><div>MassAlign (Personalization)</div></div>
+                <div class="feature-group-label">Support</div>
+                <div class="feature-item"><div class="check check-blue">✓</div><div>Email support, knowledge base and onboarding docs</div></div>
+                <div class="na-item"><div class="na-dot">·</div><div>Dedicated CSM</div></div>
+            </div>
+        </div>
+
+        <div class="tier featured">
+            <div class="tier-header">
+                <div class="tier-badge">Most Popular · Tier 02</div>
+                <div class="tier-name">Growth</div>
+                <div class="tier-tagline">For scaling revenue teams who need full-funnel orchestration, competitive intelligence, and cross-team alignment.</div>
+            </div>
+            <div class="tier-pricing">
+                <div class="price-seats">Up to 20 seats</div>
+                <div class="price-divider">·</div>
+                <div class="price-model">Annual subscription</div>
+            </div>
+            <div class="tier-seats">
+                <div class="seats-label">Additional Seats</div>
+                <div class="seats-value">Per-seat add-on, billed annually</div>
+            </div>
+            <div class="tier-features">
+                <div class="feature-group-label">Full Platform Access</div>
+                <div class="feature-item"><div class="check check-green">✓</div><div><strong>All Starter features</strong> included</div></div>
+                <div class="feature-item"><div class="check check-green">✓</div><div><strong>MassCompete</strong>: Real-time competitive intelligence</div></div>
+                <div class="feature-item"><div class="check check-green">✓</div><div><strong>MassAlign</strong>: B2B personalization at scale</div></div>
+                <div class="feature-item"><div class="check check-green">✓</div><div><strong>MassEngage</strong>: CRM integration and lifecycle management</div></div>
+                <div class="feature-group-label">Data and Intelligence</div>
+                <div class="feature-item"><div class="check check-green">✓</div><div>Access to <strong>60M B2B records</strong> and 200M B2C signals</div></div>
+                <div class="feature-item"><div class="check check-green">✓</div><div>MassSignal: <strong>8 channels</strong> with AI optimization</div></div>
+                <div class="feature-group-label">Support</div>
+                <div class="feature-item"><div class="check check-green">✓</div><div>Priority support with dedicated onboarding specialist</div></div>
+                <div class="feature-item"><div class="check check-green">✓</div><div>Quarterly business reviews</div></div>
+            </div>
+        </div>
+
+        <div class="tier">
+            <div class="tier-header">
+                <div class="tier-badge">Tier 03</div>
+                <div class="tier-name">Enterprise</div>
+                <div class="tier-tagline">For global revenue organizations requiring custom integrations, unlimited scale, and white-glove service.</div>
+            </div>
+            <div class="tier-pricing">
+                <div class="price-seats">Unlimited seats</div>
+                <div class="price-divider">·</div>
+                <div class="price-model">Custom annual agreement</div>
+            </div>
+            <div class="tier-seats">
+                <div class="seats-label">Contract Structure</div>
+                <div class="seats-value">Volume seat blocks, negotiated annually</div>
+            </div>
+            <div class="tier-features">
+                <div class="feature-group-label">Everything in Growth, Plus:</div>
+                <div class="feature-item"><div class="check check-purple">✓</div><div><strong>Custom API integrations</strong>: Salesforce, HubSpot and custom CRM</div></div>
+                <div class="feature-item"><div class="check check-purple">✓</div><div><strong>SSO and advanced security</strong> with SOC 2 compliance</div></div>
+                <div class="feature-item"><div class="check check-purple">✓</div><div><strong>Custom data ingestion</strong> for proprietary signal integration</div></div>
+                <div class="feature-item"><div class="check check-purple">✓</div><div>Unlimited MassSignal channels with custom AI training</div></div>
+                <div class="feature-group-label">White-Glove Service</div>
+                <div class="feature-item"><div class="check check-purple">✓</div><div><strong>Dedicated CSM</strong> and implementation engineer</div></div>
+                <div class="feature-item"><div class="check check-purple">✓</div><div>Monthly executive business reviews</div></div>
+                <div class="feature-item"><div class="check check-purple">✓</div><div>SLA guarantees · 99.9% uptime commitment</div></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="result-strip fade">
+    <div class="result-left">
+        <div class="result-eyebrow">Outcome · Post-Launch Results</div>
+        <div class="result-headline">Seat-based model stabilized recurring revenue<br>and <em>drove 15% ACV growth</em> within one quarter of launch</div>
+    </div>
+    <div class="result-metrics">
+        <div class="result-metric">
+            <div class="result-num" style="color:var(--indigo)">+15%</div>
+            <div class="result-metric-label">ACV Growth</div>
+        </div>
+        <div class="result-metric">
+            <div class="result-num" style="color:var(--green)">+22%</div>
+            <div class="result-metric-label">Feature Utilization</div>
+        </div>
+        <div class="result-metric">
+            <div class="result-num" style="color:var(--amber)">$110K+</div>
+            <div class="result-metric-label">Contract Supported</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-footer">
+    <div class="footer-main">
+        <div class="footer-left"><strong>Pooja J</strong> · Associate Product Marketing Manager · Frisco, TX</div>
+        <div class="footer-right">Pricing details illustrative · Jun 2023 to Aug 2024</div>
+    </div>
+    <div class="footer-disclaimer">
+        This document is a portfolio sample created for demonstration purposes only. It is not an official document of MassMetric or any affiliated company. All logos, trademarks, and brand elements belong to their respective owners and are used here solely for illustrative purposes. Metrics reflect the author's professional contributions and are not official company disclosures.
+    </div>
+</div>
+
+<script>
+const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

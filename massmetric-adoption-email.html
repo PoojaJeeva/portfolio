@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MassMetric Feature Adoption Email</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #09090b;
+            --bg-card: #111113;
+            --bg-card-2: #16161a;
+            --border: rgba(255,255,255,0.07);
+            --border-light: rgba(255,255,255,0.04);
+            --text: #fafafa;
+            --text-secondary: rgba(255,255,255,0.5);
+            --text-muted: rgba(255,255,255,0.26);
+            --green: #4ade80;
+            --green-bg: rgba(74,222,128,0.08);
+            --blue: #60a5fa;
+            --blue-bg: rgba(96,165,250,0.08);
+            --amber: #fbbf24;
+            --amber-bg: rgba(251,191,36,0.08);
+            --purple: #a78bfa;
+            --purple-bg: rgba(167,139,250,0.08);
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text);
+        }
+
+        .portfolio-badge {
+            position: fixed;
+            top: 20px; right: 20px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 20px;
+            z-index: 100;
+        }
+
+        .page-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .page-header {
+            margin-bottom: 48px;
+        }
+
+        .page-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-eyebrow::before {
+            content: '';
+            display: block;
+            width: 20px; height: 1px;
+            background: var(--amber);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 10px;
+        }
+
+        .page-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 560px;
+        }
+
+        .email-meta-strip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px 32px;
+            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .meta-field-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .meta-field-value {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .content-layout {
+            display: grid;
+            grid-template-columns: 220px 1fr 220px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .annotation {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .annotation::after {
+            content: '';
+            position: absolute;
+            right: -9px;
+            top: 18px;
+            width: 0; height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 9px solid var(--bg-card);
+        }
+
+        .annotation.right::after {
+            left: -9px; right: auto;
+            border-left: none;
+            border-right: 9px solid var(--bg-card);
+        }
+
+        .annotation-tag {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
+        .tag-strategy { background: var(--blue-bg); color: var(--blue); }
+        .tag-copy     { background: var(--green-bg); color: var(--green); }
+        .tag-ux       { background: var(--purple-bg); color: var(--purple); }
+        .tag-data     { background: var(--amber-bg); color: var(--amber); }
+
+        .annotation-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        .annotation-text strong { color: var(--text); font-weight: 600; }
+
+        /* EMAIL CLIENT — stays light to feel like a real inbox */
+        .email-client {
+            background: white;
+            border: 1px solid #e0e0dc;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.3);
+        }
+
+        .email-chrome {
+            background: #f1f1f1;
+            border-bottom: 1px solid #e0e0dc;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chrome-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+
+        .chrome-label {
+            margin-left: 8px;
+            font-size: 11px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        .email-header-row {
+            padding: 20px 28px;
+            border-bottom: 1px solid #eee;
+            background: #fafafa;
+        }
+
+        .email-subject-line {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .email-preview-text {
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .email-from-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-bottom: 1px solid #eee;
+            background: #fafafa;
+        }
+
+        .sender-avatar {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: #0b0f1e;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sender-info { flex: 1; }
+        .sender-name { font-size: 13px; font-weight: 600; color: #111; }
+        .sender-email { font-size: 11px; color: #999; }
+        .email-date { font-size: 11px; color: #999; }
+
+        .email-brand-bar {
+            background: #0b0f1e;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-name {
+            font-size: 17px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-name span { color: rgba(255,255,255,0.35); }
+
+        .brand-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .brand-nav a {
+            font-size: 11px;
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .email-hero {
+            background: linear-gradient(135deg, #1e1b4b, #1a1a2e);
+            padding: 40px 40px 32px;
+        }
+
+        .email-trigger-tag {
+            display: inline-block;
+            background: rgba(251,191,36,0.15);
+            border: 1px solid rgba(251,191,36,0.3);
+            color: #fbbf24;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .email-headline {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .email-headline span { color: #a5b4fc; }
+
+        .email-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.65;
+            margin-bottom: 28px;
+            max-width: 420px;
+        }
+
+        .email-cta {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 13px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        .email-signals {
+            padding: 28px 40px;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .signals-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 16px;
+        }
+
+        .signal-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0ec;
+        }
+
+        .signal-item:last-child { border-bottom: none; }
+
+        .signal-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .signal-content { flex: 1; }
+
+        .signal-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 2px;
+        }
+
+        .signal-desc {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .signal-time {
+            font-size: 10px;
+            color: #aaa;
+            white-space: nowrap;
+        }
+
+        .signal-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .badge-hot  { background: #fef2f2; color: #dc2626; }
+        .badge-warm { background: #fff7ed; color: #ea580c; }
+        .badge-new  { background: #eff6ff; color: #2563eb; }
+
+        .email-steps {
+            padding: 28px 40px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .steps-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .step-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .step {
+            flex: 1;
+            background: white;
+            border: 1px solid #e8e8e4;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .step-num {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: #0b0f1e;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+
+        .step-title {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #111;
+        }
+
+        .step-desc {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .email-footer-cta {
+            padding: 28px 40px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+
+        .footer-cta-text {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .footer-cta-text strong { color: #111; }
+
+        .cta-secondary {
+            display: inline-block;
+            background: #0b0f1e;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .email-small-footer {
+            padding: 20px 40px;
+            background: #f8f8f6;
+        }
+
+        .email-small-footer p {
+            font-size: 10px;
+            color: #aaa;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* PERFORMANCE SECTION */
+        .performance-section {
+            margin-top: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .perf-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card-2);
+        }
+
+        .perf-header h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .perf-header p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .perf-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .perf-stat {
+            padding: 24px 20px;
+            border-right: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .perf-stat:last-child { border-right: none; }
+
+        .perf-num {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 4px;
+        }
+
+        .perf-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .perf-context {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .perf-delta {
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .delta-up { color: var(--green); }
+
+        /* STRATEGY CARDS */
+        .strategy-section {
+            margin-top: 32px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .strategy-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .strategy-tag {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .strategy-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .strategy-body {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        /* PAGE FOOTER */
+        .page-footer {
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-main p { font-size: 12px; color: var(--text-muted); }
+        .footer-main strong { color: var(--text-secondary); font-weight: 600; }
+
+        .footer-disclaimer {
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            max-width: 780px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade { opacity: 0; }
+        .fade.visible { animation: fadeUp 0.55s ease forwards; }
+    </style>
+</head>
+<body>
+
+<div class="portfolio-badge">Portfolio Sample</div>
+
+<div class="page-wrap">
+
+    <div class="page-header fade">
+        <div class="page-eyebrow">Work Sample · Lifecycle Marketing</div>
+        <div class="page-title">Feature Adoption Email</div>
+        <p class="page-desc">A lifecycle email designed to activate dormant users on MassCompete (MassMetric's competitive intelligence feature), contributing to a 22% lift in platform feature utilization.</p>
+    </div>
+
+    <div class="email-meta-strip fade">
+        <div class="meta-field">
+            <div class="meta-field-label">Email Type</div>
+            <div class="meta-field-value">Lifecycle · Feature Activation</div>
+        </div>
+        <div class="meta-field">
+            <div class="meta-field-label">Trigger</div>
+            <div class="meta-field-value">Day 14, MassCompete not yet activated</div>
+        </div>
+        <div class="meta-field">
+            <div class="meta-field-label">Audience</div>
+            <div class="meta-field-value">Growth and Enterprise accounts with active seats, zero MassCompete events</div>
+        </div>
+        <div class="meta-field">
+            <div class="meta-field-label">Goal</div>
+            <div class="meta-field-value">Drive first competitive report and reduce churn risk</div>
+        </div>
+    </div>
+
+    <div class="content-layout fade">
+
+        <!-- LEFT ANNOTATIONS -->
+        <div class="annotation-col">
+            <div style="height:60px"></div>
+
+            <div class="annotation">
+                <div class="annotation-tag tag-strategy">Strategy</div>
+                <div class="annotation-text"><strong>Urgency without pressure.</strong> "Your competitors just moved" creates relevance-based urgency, not artificial scarcity. The hook is about their world, not our feature.</div>
+            </div>
+
+            <div style="height:40px"></div>
+
+            <div class="annotation">
+                <div class="annotation-tag tag-copy">Copywriting</div>
+                <div class="annotation-text"><strong>Signal preview = value preview.</strong> Showing 3 real-looking competitive signals before the click teaches users what the feature does and removes activation anxiety.</div>
+            </div>
+
+            <div style="height:120px"></div>
+
+            <div class="annotation">
+                <div class="annotation-tag tag-ux">UX</div>
+                <div class="annotation-text"><strong>Three steps removes friction.</strong> Users who don't activate often fear complexity. Showing it takes 3 steps under 5 minutes eliminates the "I'll do it later" deferral.</div>
+            </div>
+        </div>
+
+        <!-- EMAIL CLIENT -->
+        <div class="email-client">
+
+            <div class="email-chrome">
+                <div class="chrome-dot" style="background:#ff5f57"></div>
+                <div class="chrome-dot" style="background:#ffbd2e"></div>
+                <div class="chrome-dot" style="background:#28c840"></div>
+                <div class="chrome-label">Inbox · MassMetric</div>
+            </div>
+
+            <div class="email-header-row">
+                <div class="email-subject-line">Your competitors just moved. Here's what changed. 👀</div>
+                <div class="email-preview-text">MassCompete spotted 3 shifts in your market. You haven't seen them yet.</div>
+            </div>
+
+            <div class="email-from-row">
+                <div class="sender-avatar">M</div>
+                <div class="sender-info">
+                    <div class="sender-name">Alex Chen, Customer Success · MassMetric</div>
+                    <div class="sender-email">alex@massmetric.com to you@company.com</div>
+                </div>
+                <div class="email-date">2 min ago</div>
+            </div>
+
+            <div class="email-body">
+
+                <div class="email-brand-bar">
+                    <div class="brand-name">Mass<span>Metric</span></div>
+                    <div class="brand-nav">
+                        <a href="#">Dashboard</a>
+                        <a href="#">Reports</a>
+                        <a href="#">Help</a>
+                    </div>
+                </div>
+
+                <div class="email-hero">
+                    <div class="email-trigger-tag">MassCompete · Not Yet Activated</div>
+                    <div class="email-headline">Your competitors just moved.<br><span>You haven't seen it yet.</span></div>
+                    <div class="email-sub">MassCompete has been tracking competitor signals in your space since day one. We've caught 3 shifts in the last 7 days and you haven't logged in to see them. Here's a preview of what you're missing.</div>
+                    <a href="#" class="email-cta">See My Competitive Signals →</a>
+                </div>
+
+                <div class="email-signals">
+                    <div class="signals-label">What MassCompete caught this week</div>
+
+                    <div class="signal-item">
+                        <div class="signal-icon" style="background:#fef2f2">🔴</div>
+                        <div class="signal-content">
+                            <div class="signal-title">Competitor A launched a new pricing page</div>
+                            <div class="signal-desc">Detected a new pricing route with a 3-tier structure. Possible SMB push. Messaging shifted from "enterprise" to "teams of all sizes."</div>
+                        </div>
+                        <div>
+                            <div class="signal-time">2 days ago</div>
+                            <div class="signal-badge badge-hot">Hot</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-item">
+                        <div class="signal-icon" style="background:#fff7ed">🟡</div>
+                        <div class="signal-content">
+                            <div class="signal-title">Competitor B updated their homepage headline</div>
+                            <div class="signal-desc">Previous: "The #1 ABM Platform." Now: "Turn Intent Into Pipeline." Likely repositioning toward revenue outcomes — same shift you're making.</div>
+                        </div>
+                        <div>
+                            <div class="signal-time">4 days ago</div>
+                            <div class="signal-badge badge-warm">Warm</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-item">
+                        <div class="signal-icon" style="background:#eff6ff">🔵</div>
+                        <div class="signal-content">
+                            <div class="signal-title">New G2 reviews for Competitor C, 6 this week</div>
+                            <div class="signal-desc">Avg score 4.2. Common complaint: "setup takes too long." This is your speed-to-value differentiation and worth adding to your pitch deck.</div>
+                        </div>
+                        <div>
+                            <div class="signal-time">6 days ago</div>
+                            <div class="signal-badge badge-new">New</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-steps">
+                    <div class="steps-label">Activate MassCompete in 3 steps · under 5 minutes</div>
+                    <div class="step-row">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-title">Add Competitors</div>
+                            <div class="step-desc">Paste up to 10 competitor domains. MassCompete starts tracking instantly.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-title">Choose Signal Types</div>
+                            <div class="step-desc">Pricing, messaging, job posts, review activity, ad changes. Pick what matters.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-title">Set Alert Frequency</div>
+                            <div class="step-desc">Daily digest or real-time Slack alerts. Your team stays informed automatically.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-footer-cta">
+                    <div class="footer-cta-text">You're on the <strong>Growth plan</strong> — MassCompete is fully included. You're not paying more for this. Just missing it.</div>
+                    <a href="#" class="cta-secondary">Activate MassCompete Now →</a>
+                </div>
+
+                <div class="email-small-footer">
+                    <p>
+                        You're receiving this because MassCompete hasn't been activated on your account.<br>
+                        MassMetric · Frisco, TX<br>
+                        <a href="#" style="color:#aaa">Manage email preferences</a> · <a href="#" style="color:#aaa">Unsubscribe</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT ANNOTATIONS -->
+        <div class="annotation-col">
+            <div style="height:280px"></div>
+
+            <div class="annotation right">
+                <div class="annotation-tag tag-data">Personalization</div>
+                <div class="annotation-text"><strong>Real signal preview = trust.</strong> Showing actual (sanitized) market signals, not generic copy, proves the feature works before they even click. Reduces activation skepticism.</div>
+            </div>
+
+            <div style="height:80px"></div>
+
+            <div class="annotation right">
+                <div class="annotation-tag tag-copy">Retention</div>
+                <div class="annotation-text"><strong>"You're not paying more."</strong> Removes the perceived cost barrier. Reminds users they're leaving included value on the table — strongest lifecycle motivator for SaaS.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="performance-section fade">
+        <div class="perf-header">
+            <h3>Lifecycle Email Series Performance</h3>
+            <p>Feature activation sequence · MassCompete onboarding · Growth and Enterprise segments</p>
+        </div>
+        <div class="perf-grid">
+            <div class="perf-stat">
+                <div class="perf-label">Open Rate</div>
+                <div class="perf-num" style="color:var(--blue)">48%</div>
+                <div class="perf-context">vs. 22% SaaS avg</div>
+                <div class="perf-delta delta-up">↑ 26pts above benchmark</div>
+            </div>
+            <div class="perf-stat">
+                <div class="perf-label">Click-to-Open</div>
+                <div class="perf-num" style="color:var(--purple)">31%</div>
+                <div class="perf-context">vs. 12% SaaS avg</div>
+                <div class="perf-delta delta-up">↑ 19pts above benchmark</div>
+            </div>
+            <div class="perf-stat">
+                <div class="perf-label">Feature Activation</div>
+                <div class="perf-num" style="color:var(--green)">22%</div>
+                <div class="perf-context">utilization lift post-series</div>
+                <div class="perf-delta delta-up">↑ from baseline of 0</div>
+            </div>
+            <div class="perf-stat">
+                <div class="perf-label">Sequence Emails</div>
+                <div class="perf-num" style="color:var(--text)">3</div>
+                <div class="perf-context">Day 14 · Day 21 · Day 30</div>
+                <div class="perf-delta" style="color:var(--text-muted)">Escalating urgency</div>
+            </div>
+            <div class="perf-stat">
+                <div class="perf-label">Churn Risk Reduction</div>
+                <div class="perf-num" style="color:var(--amber)">↓</div>
+                <div class="perf-context">Accounts who activated showed lower 90-day churn signal</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="strategy-section fade">
+        <div class="strategy-card">
+            <div class="strategy-tag" style="background:var(--blue-bg);color:var(--blue)">Trigger Logic</div>
+            <div class="strategy-title">Why Day 14?</div>
+            <div class="strategy-body">CRM data showed the highest activation drop-off at days 10 through 18. Users who hadn't touched MassCompete by day 14 had a 3x higher likelihood of never activating. Day 14 was the optimal intervention point — late enough for onboarding dust to settle, early enough to save the account.</div>
+        </div>
+        <div class="strategy-card">
+            <div class="strategy-tag" style="background:var(--green-bg);color:var(--green)">Sequencing</div>
+            <div class="strategy-title">Three-Email Escalation</div>
+            <div class="strategy-body">Email 1 (Day 14): Value-first. Shows signals, low pressure. Email 2 (Day 21): Social proof. "Here's what teams like yours found." Email 3 (Day 30): Urgency plus CS offer. "Book 20 min with your CSM, we'll set it up for you." Each escalation step reduced required user effort.</div>
+        </div>
+        <div class="strategy-card">
+            <div class="strategy-tag" style="background:var(--amber-bg);color:var(--amber)">Impact</div>
+            <div class="strategy-title">Why This Mattered</div>
+            <div class="strategy-body">MassCompete was included in the Growth plan but had the lowest activation rate of all 7 MassMetric products. Low activation equals perceived low value equals churn risk at renewal. This email series was the primary driver of the 22% feature utilization lift, directly strengthening account retention.</div>
+        </div>
+    </div>
+
+    <div class="page-footer fade">
+        <div class="footer-main">
+            <p><strong>Pooja J</strong> · Associate Product Marketing Manager · Frisco, TX</p>
+            <p>Metrics illustrative · Jun 2023 to Aug 2024</p>
+        </div>
+        <div class="footer-disclaimer">
+            This document is a portfolio sample created for demonstration purposes only. It is not an official document of MassMetric or any affiliated company. All logos, trademarks, and brand elements belong to their respective owners and are used here solely for illustrative purposes. Metrics reflect the author's professional contributions and are not official company disclosures.
+        </div>
+    </div>
+
+</div>
+
+<script>
+const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

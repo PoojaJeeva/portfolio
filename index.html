@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pooja J — Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #09090b;
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: #fafafa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .wrap { max-width: 640px; width: 100%; }
+        .header { margin-bottom: 48px; }
+        .eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #fbbf24;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .eyebrow::before {
+            content: '';
+            display: block;
+            width: 20px; height: 1px;
+            background: #fbbf24;
+        }
+        h1 {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.6;
+        }
+        .grid { display: flex; flex-direction: column; gap: 12px; }
+        a.card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #111113;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 20px 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        a.card:hover {
+            background: #16161a;
+            border-color: rgba(255,255,255,0.14);
+        }
+        .card-left { flex: 1; }
+        .card-tag {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .tag-lifecycle { background: rgba(96,165,250,0.1); color: #60a5fa; }
+        .tag-strategy  { background: rgba(167,139,250,0.1); color: #a78bfa; }
+        .tag-research  { background: rgba(74,222,128,0.1); color: #4ade80; }
+        .tag-analytics { background: rgba(251,191,36,0.1); color: #fbbf24; }
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .card-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            line-height: 1.5;
+        }
+        .card-arrow {
+            font-size: 16px;
+            color: rgba(255,255,255,0.2);
+            margin-left: 16px;
+            flex-shrink: 0;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.2);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="header">
+        <div class="eyebrow">Work Samples · Product Marketing</div>
+        <h1>Pooja J</h1>
+        <p class="subtitle">Associate Product Marketing Manager · Frisco, TX<br>A collection of portfolio samples from MassMetric.</p>
+    </div>
+    <div class="grid">
+        <a class="card" href="massmetric-adoption-email.html">
+            <div class="card-left">
+                <div class="card-tag tag-lifecycle">Lifecycle · Feature Activation</div>
+                <div class="card-title">Feature Adoption Email</div>
+                <div class="card-desc">Lifecycle email designed to activate dormant users on MassCompete, driving a 22% lift in feature utilization.</div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+        <a class="card" href="massmetric-pricing-framework.html">
+            <div class="card-left">
+                <div class="card-tag tag-strategy">Pricing Strategy</div>
+                <div class="card-title">Pricing Framework</div>
+                <div class="card-desc">Competitive pricing analysis and packaging framework for MassMetric's Growth and Enterprise tiers.</div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+        <a class="card" href="massmetric-winloss-summary.html">
+            <div class="card-left">
+                <div class="card-tag tag-research">Win/Loss Research</div>
+                <div class="card-title">Win/Loss Analysis</div>
+                <div class="card-desc">Synthesized win/loss interview findings to surface competitive positioning gaps and inform sales enablement.</div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+        <a class="card" href="pooja-campaign-dashboard.html">
+            <div class="card-left">
+                <div class="card-tag tag-analytics">Campaign Analytics</div>
+                <div class="card-title">Campaign Performance Dashboard</div>
+                <div class="card-desc">End-to-end campaign performance tracking across channels, segments, and funnel stages.</div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+    </div>
+    <div class="footer">Metrics illustrative · Jun 2023 – Aug 2024</div>
+</div>
+</body>
+</html>
