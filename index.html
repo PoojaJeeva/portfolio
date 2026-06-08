@@ -195,9 +195,11 @@
       transition: border-color 0.15s, transform 0.15s;
     }
     .work-card:hover { border-color: rgba(0,0,0,0.18); transform: translateY(-2px); }
+    .work-card-top  { flex: 1; }
+    .work-card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
     .work-card-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
-    .work-card-desc  { font-size: 11px; color: var(--text-2); line-height: 1.5; margin-bottom: 14px; }
-    .work-card-arrow { font-size: 14px; color: var(--text-3); align-self: flex-end; }
+    .work-card-desc  { font-size: 11px; color: var(--text-2); line-height: 1.5; }
+    .work-card-arrow { font-size: 14px; color: var(--text-3); }
 
     /* ── CREATIVE GALLERY ── */
     .creative-grid {
@@ -377,7 +379,7 @@
   <div class="hero-left">
     <div class="hero-tag">Technical Product Marketing</div>
     <h1>Translating complex products into market moments.</h1>
-    <p class="hero-sub">Product Marketer with hands-on experience across lifecycle campaigns, investor relations, NASDAQ press releases, and broadcast advertising — now building the story behind technical products that matter.</p>
+    <p class="hero-sub">Product Marketer with hands-on experience across lifecycle campaigns, investor relations, NASDAQ press releases, and broadcast advertising. Building the story behind technical products that matter.</p>
     <div class="hero-btns">
       <a href="#work" class="btn-primary">View Work</a>
       <a href="https://poojajeeva.github.io/marketing-dashboard/" target="_blank" class="btn-secondary">AI Marketing Dashboard ↗</a>
@@ -392,8 +394,8 @@
         <div class="stat-label">Feature utilization<br>lift post-campaign</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num accent">CNBC</div>
-        <div class="stat-label">Broadcast ad<br>script & scenes</div>
+        <div class="stat-num accent">31%</div>
+        <div class="stat-label">Click-to-open rate<br>2.5× industry average</div>
       </div>
     </div>
   </div>
@@ -478,7 +480,7 @@
         <div class="featured-card-tag tag-strategy">Sub-Agentic AI</div>
         <div class="featured-card-title">Marketing Intelligence Dashboard</div>
         <div class="featured-card-desc">Built sub-agentic AI tools that replace hours of manual research with one click — competitive analysis, campaign briefs, and launch strategy powered by Claude.</div>
-        <div class="company-chip chip-personal">Personal Project</div>
+        <div class="company-chip chip-lp">Laser Photonics</div>
       </div>
     </a>
   </div>
@@ -486,49 +488,59 @@
   <!-- Work sample cards -->
   <div class="work-grid fade" style="grid-template-columns:repeat(5,1fr);">
     <a class="work-card" href="massmetric-adoption-email.html">
-      <div>
+      <div class="work-card-top">
         <div class="featured-card-tag tag-lifecycle" style="margin-bottom:10px">Lifecycle</div>
         <div class="work-card-title">Feature Adoption Email</div>
         <div class="work-card-desc">Drove a 22% feature utilization lift for MassCompete. 48% open rate vs. 22% SaaS average.</div>
-        <div class="company-chip chip-mm">MassMetric</div>
       </div>
-      <div class="work-card-arrow">→</div>
+      <div class="work-card-bottom">
+        <div class="company-chip chip-mm">MassMetric</div>
+        <div class="work-card-arrow">→</div>
+      </div>
     </a>
     <a class="work-card" href="massmetric-winloss-summary.html">
-      <div>
+      <div class="work-card-top">
         <div class="featured-card-tag tag-research" style="margin-bottom:10px">Win/Loss</div>
         <div class="work-card-title">Win/Loss Analysis</div>
         <div class="work-card-desc">Synthesized interview findings to surface competitive positioning gaps and fuel sales enablement.</div>
-        <div class="company-chip chip-mm">MassMetric</div>
       </div>
-      <div class="work-card-arrow">→</div>
+      <div class="work-card-bottom">
+        <div class="company-chip chip-mm">MassMetric</div>
+        <div class="work-card-arrow">→</div>
+      </div>
     </a>
     <a class="work-card" href="massmetric-pricing-framework.html">
-      <div>
+      <div class="work-card-top">
         <div class="featured-card-tag tag-strategy" style="margin-bottom:10px">Pricing</div>
         <div class="work-card-title">Pricing Framework</div>
         <div class="work-card-desc">Competitive pricing analysis and packaging strategy for Growth and Enterprise tiers.</div>
-        <div class="company-chip chip-mm">MassMetric</div>
       </div>
-      <div class="work-card-arrow">→</div>
+      <div class="work-card-bottom">
+        <div class="company-chip chip-mm">MassMetric</div>
+        <div class="work-card-arrow">→</div>
+      </div>
     </a>
     <a class="work-card" href="pooja-campaign-dashboard.html">
-      <div>
+      <div class="work-card-top">
         <div class="featured-card-tag tag-analytics" style="margin-bottom:10px">Analytics</div>
         <div class="work-card-title">Campaign Performance Dashboard</div>
         <div class="work-card-desc">End-to-end campaign tracking across channels, segments, and funnel stages — built for real-time decisions.</div>
-        <div class="company-chip chip-mm">MassMetric</div>
       </div>
-      <div class="work-card-arrow">→</div>
+      <div class="work-card-bottom">
+        <div class="company-chip chip-mm">MassMetric</div>
+        <div class="work-card-arrow">→</div>
+      </div>
     </a>
     <a class="work-card" href="https://claude.ai/public/artifacts/9398145e-5a4d-4fbc-827a-72f7908f3dab" target="_blank">
-      <div>
+      <div class="work-card-top">
         <div class="featured-card-tag tag-template" style="margin-bottom:10px">Email Design</div>
         <div class="work-card-title">Reusable Newsletter Template</div>
         <div class="work-card-desc">Modular, brand-consistent newsletter template built for scalable campaign communications.</div>
-        <div class="company-chip chip-lp">Laser Photonics</div>
       </div>
-      <div class="work-card-arrow">↗</div>
+      <div class="work-card-bottom">
+        <div class="company-chip chip-lp">Laser Photonics</div>
+        <div class="work-card-arrow">↗</div>
+      </div>
     </a>
   </div>
 </section>
