@@ -412,6 +412,70 @@
     .chip-lp       { background: rgba(185,28,28,0.08); color: #991b1b; }
     .chip-personal { background: rgba(184,92,42,0.1);  color: #b85c2a; }
 
+    /* ── PAGE LOAD ── */
+    body { opacity: 0; animation: pageIn 0.5s ease 0.05s forwards; }
+    @keyframes pageIn { to { opacity: 1; } }
+
+    /* ── NAV ENTRANCE ── */
+    nav { animation: navDown 0.5s cubic-bezier(0.25,0,0,1) 0.1s both; }
+    @keyframes navDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* ── HERO FLOAT ── */
+    .hero-photo { animation: float 7s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-14px); }
+    }
+
+    /* ── HERO WORDS ── */
+    .hero-word {
+      display: inline-block;
+      opacity: 0; transform: translateY(28px);
+      animation: wordUp 0.5s cubic-bezier(0.25,0,0,1) both;
+    }
+    @keyframes wordUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── SECTION EYEBROW LINE DRAW ── */
+    .section-eyebrow::before {
+      width: 0;
+      transition: width 0.6s cubic-bezier(0.25,0,0,1) 0.15s;
+    }
+    .section-eyebrow.line-visible::before { width: 18px; }
+
+    /* ── SHIMMER ON FEATURED CARDS ── */
+    .featured-card { position: relative; overflow: hidden; }
+    .featured-card::before {
+      content: '';
+      position: absolute; top: 0; left: -75%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+      transform: skewX(-18deg);
+      z-index: 1; pointer-events: none;
+    }
+    .featured-card:hover::before { animation: shimmer 0.65s ease-in-out; }
+    @keyframes shimmer { 0% { left: -75%; } 100% { left: 140%; } }
+
+    /* ── WORK CARD STAGGER ── */
+    .work-card { opacity: 0; transform: translateY(20px); transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.2s, box-shadow 0.2s; }
+    .work-card.card-visible { opacity: 1; transform: translateY(0); }
+
+    /* ── STAT CARD NUMBER COUNT ── */
+    .stat-count { display: inline; }
+
+    /* ── CURSOR GLOW IN CREATIVE ZONE ── */
+    .creatives-zone { position: relative; }
+    .cursor-glow {
+      position: absolute; pointer-events: none; z-index: 0;
+      width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(184,92,42,0.12) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+
+    /* ── 3D TILT ON CREATIVE IMAGES ── */
+    .creative-img { transform-style: preserve-3d; }
+
     /* ── FADE IN ── */
     .fade { opacity: 0; transform: translateY(16px); transition: opacity 0.55s ease, transform 0.55s ease; }
     .fade.visible { opacity: 1; transform: translateY(0); }
@@ -438,7 +502,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">Pooja J</a>
+  <a class="nav-logo" href="#">Pooja Jeeva</a>
   <ul class="nav-links">
     <li><a href="#work" class="active">Work</a></li>
     <li><a href="#creatives">Creatives</a></li>
@@ -461,8 +525,8 @@
     <div class="hero-stats">
       <div class="stat-card">
         <div style="font-size:16px;margin-bottom:6px;">📈</div>
-        <div class="stat-num" style="font-size:13px;font-weight:700;letter-spacing:-0.01em;">22% Feature Adoption Lift</div>
-        <div class="stat-label">Lifecycle campaign drove 48% open rate — 2× SaaS average</div>
+        <div class="stat-num" style="font-size:13px;font-weight:700;letter-spacing:-0.01em;"><span data-count="22" data-suffix="%">22%</span> Feature Adoption Lift</div>
+        <div class="stat-label">Lifecycle campaign drove <span data-count="48" data-suffix="%">48%</span> open rate — 2× SaaS average</div>
       </div>
       <div class="stat-card">
         <div style="font-size:16px;margin-bottom:6px;">📡</div>
@@ -764,7 +828,7 @@
 </div>
 
 <script>
-  // Announcement banner
+  /* ─── Banner ─── */
   function dismissBanner() {
     document.getElementById('announceBar').classList.add('hidden');
     sessionStorage.setItem('bannerDismissed', '1');
@@ -773,13 +837,7 @@
     document.getElementById('announceBar').classList.add('hidden');
   }
 
-  // Fade-in on scroll
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.07 });
-  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
-
-  // Lightbox
+  /* ─── Lightbox ─── */
   function openLightbox(src) {
     document.getElementById('lightbox-img').src = src;
     document.getElementById('lightbox').classList.add('open');
@@ -789,14 +847,103 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-  // Active nav on scroll
+  /* ─── Hero h1 word-by-word animation ─── */
+  const h1 = document.querySelector('.hero h1');
+  if (h1) {
+    const words = h1.textContent.trim().split(/\s+/);
+    h1.innerHTML = words.map((w, i) =>
+      `<span class="hero-word" style="animation-delay:${0.35 + i * 0.08}s">${w}</span>`
+    ).join(' ');
+  }
+
+  /* ─── Scroll-driven fade-ins ─── */
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade').forEach(el => fadeObs.observe(el));
+
+  /* ─── Eyebrow line draw ─── */
+  const eyebrowObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('line-visible'); eyebrowObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.section-eyebrow').forEach(el => eyebrowObs.observe(el));
+
+  /* ─── Staggered work cards ─── */
+  const cardObs = new IntersectionObserver(entries => {
+    entries.forEach((e, idx) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (idx % 5) * 0.08 + 's';
+        e.target.classList.add('card-visible');
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.work-card').forEach(c => cardObs.observe(c));
+
+  /* ─── Stat number counter ─── */
+  function animateCount(el, target, suffix, duration) {
+    let start = 0, step = target / (duration / 16);
+    const tick = () => {
+      start = Math.min(start + step, target);
+      el.textContent = Math.floor(start) + suffix;
+      if (start < target) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  const statObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const nums = e.target.querySelectorAll('[data-count]');
+        nums.forEach(n => animateCount(n, +n.dataset.count, n.dataset.suffix || '', 900));
+        statObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.hero-stats').forEach(el => statObs.observe(el));
+
+  /* ─── Cursor glow in creatives zone ─── */
+  const creativesZone = document.querySelector('.creatives-zone');
+  if (creativesZone) {
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    creativesZone.prepend(glow);
+    creativesZone.addEventListener('mousemove', e => {
+      const rect = creativesZone.getBoundingClientRect();
+      glow.style.opacity = '1';
+      glow.style.left = (e.clientX - rect.left) + 'px';
+      glow.style.top  = (e.clientY - rect.top + window.scrollY) + 'px';
+    });
+    creativesZone.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+  }
+
+  /* ─── 3D tilt on creative images ─── */
+  document.querySelectorAll('.creative-img').forEach(img => {
+    img.addEventListener('mousemove', e => {
+      const r = img.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      img.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+    });
+    img.addEventListener('mouseleave', () => {
+      img.style.transform = 'perspective(600px) rotateY(0) rotateX(0) scale(1)';
+    });
+  });
+  document.querySelectorAll('.creative-img').forEach(img => {
+    img.style.transition = 'transform 0.35s cubic-bezier(0.25,0,0,1)';
+  });
+
+  /* ─── Active nav on scroll ─── */
   const sections = document.querySelectorAll('section[id], footer[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
   window.addEventListener('scroll', () => {
     let current = '';
     sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
     navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
-  });
+  }, { passive: true });
 </script>
 
 </body>
