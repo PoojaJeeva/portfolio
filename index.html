@@ -91,6 +91,7 @@
     .stat-num.accent { color: var(--accent); }
     .stat-label { font-size: 11px; color: var(--text-3); margin-top: 2px; line-height: 1.4; }
 
+    .hero-right { width: 100%; }
     .hero-photo {
       width: 100%; aspect-ratio: 3/4; border-radius: 20px;
       background: var(--bg-card2);
@@ -99,9 +100,10 @@
     }
     .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* ── TICKER — dark ── */
+    /* ── TICKER ── */
     .seen-on-wrap {
-      background: var(--dark);
+      background: var(--bg);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
       padding: 18px 0;
       overflow: hidden; position: relative;
     }
@@ -115,11 +117,11 @@
       display: inline-flex; align-items: center; gap: 10px;
       padding: 0 40px;
       font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(255,255,255,0.32);
+      color: var(--text-3);
       transition: color 0.2s;
     }
-    .seen-on-item:hover { color: rgba(255,255,255,0.7); }
-    .seen-on-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: 0.7; flex-shrink: 0; }
+    .seen-on-item:hover { color: var(--accent); }
+    .seen-on-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: 0.5; flex-shrink: 0; }
     @keyframes ticker {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
@@ -219,57 +221,70 @@
     .work-card-arrow { font-size: 14px; color: var(--text-3); transition: transform 0.2s, color 0.2s; }
     .work-card:hover .work-card-arrow { transform: translate(2px, -2px); color: var(--accent); }
 
-    /* ── CREATIVE ZONE — dark full-bleed ── */
+    /* ── CREATIVE ZONE — warm ── */
     .creatives-zone {
-      background: var(--dark);
+      background: #f2e8d6;
       width: 100%;
+      border-top: 1px solid rgba(184,92,42,0.14);
+      border-bottom: 1px solid rgba(184,92,42,0.1);
     }
-    .creatives-zone section {
-      background: transparent;
+    .creatives-zone section { background: transparent; }
+    .creatives-zone .section-eyebrow { color: var(--accent); }
+    .creatives-zone .section-eyebrow::before { background: var(--accent); }
+    .creatives-zone .section-title { color: var(--text); }
+    .creatives-zone .featured-card { background: #fff; border-color: rgba(0,0,0,0.08); color: var(--text); }
+    .creatives-zone .featured-card-title { color: var(--text); }
+    .creatives-zone .featured-card-desc  { color: var(--text-2); }
+    .creatives-zone .deck-btn { background: #fff; border-color: rgba(0,0,0,0.1); color: var(--text); }
+    .creatives-zone .deck-btn:hover { background: var(--bg-card); }
+    .creatives-zone .deck-meta { color: var(--text-3); }
+
+    /* ── CREATIVE WRITE-UP ── */
+    .creative-intro {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      align-items: start; margin-bottom: 40px;
     }
-    .creatives-zone .section-eyebrow { color: var(--accent-2); }
-    .creatives-zone .section-eyebrow::before { background: var(--accent-2); }
-    .creatives-zone .section-title { color: #f0ebe4; }
-    .creatives-zone .featured-card {
-      background: rgba(255,255,255,0.04);
-      border-color: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.85);
+    .creative-desc-text {
+      font-size: 17px; font-weight: 500; color: var(--text); line-height: 1.65;
+      letter-spacing: -0.01em;
     }
-    .creatives-zone .featured-card:hover { border-color: rgba(184,92,42,0.45); }
-    .creatives-zone .featured-card-title { color: rgba(255,255,255,0.92); }
-    .creatives-zone .featured-card-desc { color: rgba(255,255,255,0.42); }
-    .creatives-zone .deck-btn {
-      background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.8);
-    }
-    .creatives-zone .deck-btn:hover { background: rgba(255,255,255,0.09); }
-    .creatives-zone .deck-meta { color: rgba(255,255,255,0.3); }
-    .creatives-zone .company-chip.chip-lp {
-      background: rgba(184,92,42,0.18); color: #e8906a;
+    .creative-desc-text em { font-style: normal; color: var(--accent); font-weight: 700; }
+    .creative-cats { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px; }
+    .creative-cat {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(184,92,42,0.1); border: 1px solid rgba(184,92,42,0.18);
+      color: var(--text-2); font-size: 11px; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px;
+      letter-spacing: 0.04em;
     }
 
-    /* ── CREATIVE GALLERY ── */
-    .creative-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px; margin-bottom: 24px;
+    /* ── CAROUSEL ── */
+    .carousel-shell { position: relative; margin-bottom: 32px; }
+    .carousel-track {
+      display: flex; gap: 14px;
+      overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+      scrollbar-width: none; padding: 4px 0 20px;
     }
+    .carousel-track::-webkit-scrollbar { display: none; }
     .creative-img {
-      border-radius: 10px; overflow: hidden;
-      aspect-ratio: 1; background: #1a1410;
+      flex: 0 0 calc(33.33% - 10px);
+      scroll-snap-align: start;
+      border-radius: 14px; overflow: hidden;
+      aspect-ratio: 1; background: var(--bg-card2);
       cursor: zoom-in; position: relative;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.1);
     }
     .creative-img img {
       width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.5s cubic-bezier(0.25,0,0,1), filter 0.3s;
+      transition: transform 0.5s cubic-bezier(0.25,0,0,1);
       display: block;
     }
-    .creative-img:hover img { transform: scale(1.08); filter: brightness(0.85); }
+    .creative-img:hover img { transform: scale(1.07); }
     .creative-img-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(15,13,11,0.88) 0%, rgba(15,13,11,0.15) 55%, transparent 100%);
+      background: linear-gradient(to top, rgba(28,24,21,0.82) 0%, rgba(28,24,21,0.1) 55%, transparent 100%);
       opacity: 0; transition: opacity 0.3s ease;
-      display: flex; align-items: flex-end; padding: 16px;
+      display: flex; align-items: flex-end; padding: 18px;
     }
     .creative-img:hover .creative-img-overlay { opacity: 1; }
     .creative-img-label {
@@ -281,13 +296,58 @@
     .creative-img-expand {
       position: absolute; top: 12px; right: 12px;
       width: 28px; height: 28px; border-radius: 6px;
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.22);
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; color: rgba(255,255,255,0.8);
+      font-size: 13px; color: white;
       opacity: 0; transform: scale(0.75);
       transition: opacity 0.22s, transform 0.22s;
     }
     .creative-img:hover .creative-img-expand { opacity: 1; transform: scale(1); }
+
+    /* Carousel nav arrows */
+    .carousel-arrows { display: flex; gap: 10px; margin-bottom: 16px; justify-content: flex-end; }
+    .carousel-arrow {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: white; border: 1px solid rgba(0,0,0,0.1);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 16px; color: var(--text-2);
+      transition: background 0.15s, color 0.15s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .carousel-arrow:hover { background: var(--accent); color: white; transform: scale(1.08); }
+
+    /* Carousel dots */
+    .carousel-dots { display: flex; gap: 6px; justify-content: center; margin-top: 4px; }
+    .cdot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(184,92,42,0.25); border: none; cursor: pointer;
+      padding: 0; transition: background 0.2s, transform 0.2s;
+    }
+    .cdot.active { background: var(--accent); transform: scale(1.3); }
+
+    /* ── HERO PHOTO SOCIALS ── */
+    .hero-right { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .hero-photo-socials { display: flex; gap: 10px; }
+    .photo-social {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: var(--text-2);
+      transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .photo-social:hover { background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 6px 18px rgba(184,92,42,0.3); }
+
+    /* ── CURSOR GLOW IN CREATIVE ZONE ── */
+    .creatives-zone { position: relative; }
+    .cursor-glow {
+      position: absolute; pointer-events: none; z-index: 0;
+      width: 350px; height: 350px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(184,92,42,0.1) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
 
     .deck-row { display: flex; gap: 12px; }
     .deck-btn {
@@ -540,8 +600,21 @@
       </div>
     </div>
   </div>
-  <div class="hero-photo">
-    <img src="assets/pooja-headshot.jpg" alt="Pooja Jeeva">
+  <div class="hero-right">
+    <div class="hero-photo">
+      <img src="assets/pooja-headshot.jpg" alt="Pooja Jeeva">
+    </div>
+    <div class="hero-photo-socials">
+      <a class="photo-social" href="mailto:poojainproduct@gmail.com" title="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+      <a class="photo-social" href="https://www.linkedin.com/in/poojajeeva/" target="_blank" rel="noopener" title="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a class="photo-social" href="https://www.instagram.com/bhujaaa/" target="_blank" rel="noopener" title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -690,36 +763,66 @@
     <div class="section-title">Brand, advertising &amp; investor relations</div>
   </div>
 
-  <div class="creative-grid fade">
-    <div class="creative-img" onclick="openLightbox('assets/artboard-think-lase.jpg')">
-      <img src="assets/artboard-think-lase.jpg" alt="Think Laser Think LASE brand ad">
-      <div class="creative-img-expand">⤢</div>
-      <div class="creative-img-overlay"><span class="creative-img-label">Think Laser · Brand Ad</span></div>
+  <div class="creative-intro fade">
+    <p class="creative-desc-text">
+      From <em>30-second CNBC broadcast spots</em> to out-of-home billboards,
+      federal defense campaigns to investor-facing social ads — every piece
+      was built around a clear market story and designed to move the right buyer.
+    </p>
+    <div class="creative-cats">
+      <span class="creative-cat">📺 Broadcast TV</span>
+      <span class="creative-cat">🎨 Brand Creative</span>
+      <span class="creative-cat">⚔️ Defense Campaign</span>
+      <span class="creative-cat">📈 Investor Relations</span>
+      <span class="creative-cat">📱 Social Ads</span>
+      <span class="creative-cat">🗺️ Out-of-Home</span>
     </div>
-    <div class="creative-img" onclick="openLightbox('assets/artboard-think-quantum.png')">
-      <img src="assets/artboard-think-quantum.png" alt="Think Quantum LASE ad">
-      <div class="creative-img-expand">⤢</div>
-      <div class="creative-img-overlay"><span class="creative-img-label">Think Quantum · Brand Ad</span></div>
+  </div>
+
+  <div class="carousel-shell fade">
+    <div class="carousel-arrows">
+      <button class="carousel-arrow" onclick="shiftCarousel(-1)" aria-label="Previous">←</button>
+      <button class="carousel-arrow" onclick="shiftCarousel(1)" aria-label="Next">→</button>
     </div>
-    <div class="creative-img" onclick="openLightbox('assets/twitter-stop-the-threat.png')">
-      <img src="assets/twitter-stop-the-threat.png" alt="Stop the Threat defense ad">
-      <div class="creative-img-expand">⤢</div>
-      <div class="creative-img-overlay"><span class="creative-img-label">Stop the Threat · Defense Campaign</span></div>
+    <div class="carousel-track" id="cTrack">
+      <div class="creative-img" onclick="openLightbox('assets/artboard-think-lase.jpg')">
+        <img src="assets/artboard-think-lase.jpg" alt="Think Laser brand ad">
+        <div class="creative-img-expand">⤢</div>
+        <div class="creative-img-overlay"><span class="creative-img-label">Think Laser · Brand Ad</span></div>
+      </div>
+      <div class="creative-img" onclick="openLightbox('assets/artboard-think-quantum.png')">
+        <img src="assets/artboard-think-quantum.png" alt="Think Quantum brand ad">
+        <div class="creative-img-expand">⤢</div>
+        <div class="creative-img-overlay"><span class="creative-img-label">Think Quantum · Brand Ad</span></div>
+      </div>
+      <div class="creative-img" onclick="openLightbox('assets/twitter-stop-the-threat.png')">
+        <img src="assets/twitter-stop-the-threat.png" alt="Stop the Threat defense campaign">
+        <div class="creative-img-expand">⤢</div>
+        <div class="creative-img-overlay"><span class="creative-img-label">Stop the Threat · Defense Campaign</span></div>
+      </div>
+      <div class="creative-img" onclick="openLightbox('assets/twitter-2.png')">
+        <img src="assets/twitter-2.png" alt="Social ad campaign">
+        <div class="creative-img-expand">⤢</div>
+        <div class="creative-img-overlay"><span class="creative-img-label">Social Ad · Defense &amp; Investor</span></div>
+      </div>
+      <div class="creative-img" onclick="openLightbox('assets/artboard-defense.png')">
+        <img src="assets/artboard-defense.png" alt="Think LASE defense ad">
+        <div class="creative-img-expand">⤢</div>
+        <div class="creative-img-overlay"><span class="creative-img-label">Think LASE · Defense &amp; Military</span></div>
+      </div>
+      <div class="creative-img" onclick="openLightbox('assets/stocktwits-lase-ad.png')">
+        <img src="assets/stocktwits-lase-ad.png" alt="Stocktwits display ad">
+        <div class="creative-img-expand">⤢</div>
+        <div class="creative-img-overlay"><span class="creative-img-label">Stocktwits Display Ad · IR Campaign</span></div>
+      </div>
     </div>
-    <div class="creative-img" onclick="openLightbox('assets/twitter-2.png')">
-      <img src="assets/twitter-2.png" alt="Twitter ad 2">
-      <div class="creative-img-expand">⤢</div>
-      <div class="creative-img-overlay"><span class="creative-img-label">LSAD Twitter Campaign</span></div>
-    </div>
-    <div class="creative-img" onclick="openLightbox('assets/artboard-defense.png')">
-      <img src="assets/artboard-defense.png" alt="Think Laser Think LASE defense ad">
-      <div class="creative-img-expand">⤢</div>
-      <div class="creative-img-overlay"><span class="creative-img-label">Think LASE · Defense &amp; Military</span></div>
-    </div>
-    <div class="creative-img" onclick="openLightbox('assets/stocktwits-lase-ad.png')" style="aspect-ratio:16/10;">
-      <img src="assets/stocktwits-lase-ad.png" alt="LASE display ad on Stocktwits" style="object-position:center top;">
-      <div class="creative-img-expand">⤢</div>
-      <div class="creative-img-overlay"><span class="creative-img-label">Stocktwits Display Ad · $LASE</span></div>
+    <div class="carousel-dots" id="cDots">
+      <button class="cdot active" onclick="goToSlide(0)"></button>
+      <button class="cdot" onclick="goToSlide(1)"></button>
+      <button class="cdot" onclick="goToSlide(2)"></button>
+      <button class="cdot" onclick="goToSlide(3)"></button>
+      <button class="cdot" onclick="goToSlide(4)"></button>
+      <button class="cdot" onclick="goToSlide(5)"></button>
     </div>
   </div>
 
@@ -905,20 +1008,6 @@
   }, { threshold: 0.6 });
   document.querySelectorAll('.hero-stats').forEach(el => statObs.observe(el));
 
-  /* ─── Cursor glow in creatives zone ─── */
-  const creativesZone = document.querySelector('.creatives-zone');
-  if (creativesZone) {
-    const glow = document.createElement('div');
-    glow.className = 'cursor-glow';
-    creativesZone.prepend(glow);
-    creativesZone.addEventListener('mousemove', e => {
-      const rect = creativesZone.getBoundingClientRect();
-      glow.style.opacity = '1';
-      glow.style.left = (e.clientX - rect.left) + 'px';
-      glow.style.top  = (e.clientY - rect.top + window.scrollY) + 'px';
-    });
-    creativesZone.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
-  }
 
   /* ─── 3D tilt on creative images ─── */
   document.querySelectorAll('.creative-img').forEach(img => {
@@ -935,6 +1024,31 @@
   document.querySelectorAll('.creative-img').forEach(img => {
     img.style.transition = 'transform 0.35s cubic-bezier(0.25,0,0,1)';
   });
+
+  /* ─── Carousel ─── */
+  const track = document.getElementById('cTrack');
+  const dots  = document.querySelectorAll('.cdot');
+
+  function updateDots() {
+    if (!track) return;
+    const slideW = track.querySelector('.creative-img')?.offsetWidth + 14 || 0;
+    const idx = Math.round(track.scrollLeft / slideW);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  function shiftCarousel(dir) {
+    if (!track) return;
+    const slideW = track.querySelector('.creative-img')?.offsetWidth + 14 || 0;
+    track.scrollBy({ left: dir * slideW * 2, behavior: 'smooth' });
+  }
+
+  function goToSlide(n) {
+    if (!track) return;
+    const slideW = track.querySelector('.creative-img')?.offsetWidth + 14 || 0;
+    track.scrollTo({ left: n * slideW, behavior: 'smooth' });
+  }
+
+  if (track) track.addEventListener('scroll', updateDots, { passive: true });
 
   /* ─── Active nav on scroll ─── */
   const sections = document.querySelectorAll('section[id], footer[id]');
