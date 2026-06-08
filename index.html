@@ -310,6 +310,33 @@
       background: none; border: none;
     }
 
+    /* ── ANNOUNCEMENT BANNER ── */
+    .announce-bar {
+      background: var(--accent); color: white;
+      padding: 10px 48px;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      font-size: 12px; font-weight: 500; line-height: 1.4;
+      position: relative;
+    }
+    .announce-bar strong { font-weight: 800; }
+    .announce-bar button {
+      position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: rgba(255,255,255,0.7);
+      font-size: 18px; cursor: pointer; line-height: 1; padding: 4px 8px;
+    }
+    .announce-bar button:hover { color: white; }
+    .announce-bar.hidden { display: none; }
+
+    /* ── COMPANY CHIPS ── */
+    .company-chip {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+      display: inline-block; margin-top: 10px;
+    }
+    .chip-mm       { background: rgba(37,99,235,0.08); color: #1d4ed8; }
+    .chip-lp       { background: rgba(185,28,28,0.08); color: #991b1b; }
+    .chip-personal { background: rgba(184,92,42,0.1);  color: #b85c2a; }
+
     /* ── FADE IN ── */
     .fade { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .fade.visible { opacity: 1; transform: translateY(0); }
@@ -327,6 +354,12 @@
   </style>
 </head>
 <body>
+
+<!-- ANNOUNCEMENT BANNER -->
+<div class="announce-bar" id="announceBar">
+  <span>📍 <strong>Upcoming:</strong> Guest Speaker at Suffolk University's Master's in Marketing Program, Sawyer Business School · Invited by Prof. Zhen Jane Zhu, Chair of Marketing</span>
+  <button onclick="dismissBanner()" aria-label="Dismiss">×</button>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -419,6 +452,7 @@
         <div class="featured-card-tag tag-video">Video · Broadcast</div>
         <div class="featured-card-title">CNBC TV Ad — Script &amp; Scene Direction</div>
         <div class="featured-card-desc">Wrote the script and directed scene structure for a 30-second CNBC broadcast ad for Laser Photonics ($LASE). Managed messaging, pacing, and brand voice end-to-end.</div>
+        <div class="company-chip chip-lp">Laser Photonics · NASDAQ: $LASE</div>
       </div>
     </div>
     <a class="featured-card" href="https://poojajeeva.github.io/marketing-dashboard/" target="_blank" style="display:flex;flex-direction:column;">
@@ -444,6 +478,7 @@
         <div class="featured-card-tag tag-strategy">Sub-Agentic AI</div>
         <div class="featured-card-title">Marketing Intelligence Dashboard</div>
         <div class="featured-card-desc">Built sub-agentic AI tools that replace hours of manual research with one click — competitive analysis, campaign briefs, and launch strategy powered by Claude.</div>
+        <div class="company-chip chip-personal">Personal Project</div>
       </div>
     </a>
   </div>
@@ -455,6 +490,7 @@
         <div class="featured-card-tag tag-lifecycle" style="margin-bottom:10px">Lifecycle</div>
         <div class="work-card-title">Feature Adoption Email</div>
         <div class="work-card-desc">Drove a 22% feature utilization lift for MassCompete. 48% open rate vs. 22% SaaS average.</div>
+        <div class="company-chip chip-mm">MassMetric</div>
       </div>
       <div class="work-card-arrow">→</div>
     </a>
@@ -463,6 +499,7 @@
         <div class="featured-card-tag tag-research" style="margin-bottom:10px">Win/Loss</div>
         <div class="work-card-title">Win/Loss Analysis</div>
         <div class="work-card-desc">Synthesized interview findings to surface competitive positioning gaps and fuel sales enablement.</div>
+        <div class="company-chip chip-mm">MassMetric</div>
       </div>
       <div class="work-card-arrow">→</div>
     </a>
@@ -471,6 +508,7 @@
         <div class="featured-card-tag tag-strategy" style="margin-bottom:10px">Pricing</div>
         <div class="work-card-title">Pricing Framework</div>
         <div class="work-card-desc">Competitive pricing analysis and packaging strategy for Growth and Enterprise tiers.</div>
+        <div class="company-chip chip-mm">MassMetric</div>
       </div>
       <div class="work-card-arrow">→</div>
     </a>
@@ -479,6 +517,7 @@
         <div class="featured-card-tag tag-analytics" style="margin-bottom:10px">Analytics</div>
         <div class="work-card-title">Campaign Performance Dashboard</div>
         <div class="work-card-desc">End-to-end campaign tracking across channels, segments, and funnel stages — built for real-time decisions.</div>
+        <div class="company-chip chip-mm">MassMetric</div>
       </div>
       <div class="work-card-arrow">→</div>
     </a>
@@ -487,6 +526,7 @@
         <div class="featured-card-tag tag-template" style="margin-bottom:10px">Email Design</div>
         <div class="work-card-title">Reusable Newsletter Template</div>
         <div class="work-card-desc">Modular, brand-consistent newsletter template built for scalable campaign communications.</div>
+        <div class="company-chip chip-lp">Laser Photonics</div>
       </div>
       <div class="work-card-arrow">↗</div>
     </a>
@@ -624,6 +664,15 @@
 </div>
 
 <script>
+  // Announcement banner
+  function dismissBanner() {
+    document.getElementById('announceBar').classList.add('hidden');
+    sessionStorage.setItem('bannerDismissed', '1');
+  }
+  if (sessionStorage.getItem('bannerDismissed')) {
+    document.getElementById('announceBar').classList.add('hidden');
+  }
+
   // Fade-in on scroll
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
