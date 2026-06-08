@@ -1,159 +1,627 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pooja J — Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #09090b;
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: #fafafa;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
-        .wrap { max-width: 640px; width: 100%; }
-        .header { margin-bottom: 48px; }
-        .eyebrow {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: #fbbf24;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .eyebrow::before {
-            content: '';
-            display: block;
-            width: 20px; height: 1px;
-            background: #fbbf24;
-        }
-        h1 {
-            font-size: 30px;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            font-size: 14px;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.6;
-        }
-        .grid { display: flex; flex-direction: column; gap: 12px; }
-        a.card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #111113;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 12px;
-            padding: 20px 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: border-color 0.15s, background 0.15s;
-        }
-        a.card:hover {
-            background: #16161a;
-            border-color: rgba(255,255,255,0.14);
-        }
-        .card-left { flex: 1; }
-        .card-tag {
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-        .tag-lifecycle { background: rgba(96,165,250,0.1); color: #60a5fa; }
-        .tag-strategy  { background: rgba(167,139,250,0.1); color: #a78bfa; }
-        .tag-research  { background: rgba(74,222,128,0.1); color: #4ade80; }
-        .tag-analytics { background: rgba(251,191,36,0.1); color: #fbbf24; }
-        .tag-template  { background: rgba(244,114,182,0.1); color: #f472b6; }
-        .card-title {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .card-desc {
-            font-size: 12px;
-            color: rgba(255,255,255,0.4);
-            line-height: 1.5;
-        }
-        .card-arrow {
-            font-size: 16px;
-            color: rgba(255,255,255,0.2);
-            margin-left: 16px;
-            flex-shrink: 0;
-        }
-        .footer {
-            margin-top: 40px;
-            font-size: 11px;
-            color: rgba(255,255,255,0.2);
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pooja Jeeva — Product Marketing Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:       #f0ebe4;
+      --bg-card:  #e8e1d9;
+      --bg-card2: #e0d9d0;
+      --text:     #1c1815;
+      --text-2:   #5a4f47;
+      --text-3:   #9a8e86;
+      --accent:   #b85c2a;
+      --accent-2: #c97a42;
+      --border:   rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo { font-size: 16px; font-weight: 800; letter-spacing: -0.03em; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--text-2); text-decoration: none; transition: color 0.15s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1200px; margin: 0 auto;
+      padding: 72px 48px 64px;
+      display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: center;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); background: rgba(184,92,42,0.1);
+      border: 1px solid rgba(184,92,42,0.2);
+      padding: 5px 12px; border-radius: 6px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 46px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1;
+      margin-bottom: 18px; color: var(--text);
+    }
+    .hero-sub {
+      font-size: 15px; color: var(--text-2); line-height: 1.7; max-width: 480px; margin-bottom: 32px;
+    }
+    .hero-btns { display: flex; gap: 12px; margin-bottom: 40px; }
+    .btn-primary {
+      background: var(--text); color: var(--bg);
+      font-size: 13px; font-weight: 700; padding: 12px 24px; border-radius: 8px;
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      background: var(--bg-card); color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 13px; font-weight: 600; padding: 12px 24px; border-radius: 8px;
+      text-decoration: none; transition: background 0.15s;
+    }
+    .btn-secondary:hover { background: var(--bg-card2); }
+
+    .hero-stats { display: flex; gap: 12px; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 20px; flex: 1;
+    }
+    .stat-num { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; color: var(--text); }
+    .stat-num.accent { color: var(--accent); }
+    .stat-label { font-size: 11px; color: var(--text-3); margin-top: 2px; line-height: 1.4; }
+
+    .hero-photo {
+      width: 100%; aspect-ratio: 3/4; border-radius: 16px;
+      background: var(--bg-card2);
+      overflow: hidden; position: relative;
+    }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; color: var(--text-3);
+    }
+    .hero-photo-placeholder span { font-size: 12px; font-weight: 500; }
+
+    /* ── AS SEEN ON ── */
+    .seen-on-wrap {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 20px 48px;
+      overflow: hidden; position: relative;
+    }
+    .seen-on-track {
+      display: flex; gap: 0;
+      animation: ticker 22s linear infinite;
+      white-space: nowrap;
+    }
+    .seen-on-wrap:hover .seen-on-track { animation-play-state: paused; }
+    .seen-on-item {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 0 40px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3);
+    }
+    .seen-on-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-3); }
+    .seen-on-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-3); margin-right: 32px; flex-shrink: 0;
+    }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── SECTIONS ── */
+    section { max-width: 1200px; margin: 0 auto; padding: 72px 48px; }
+    .section-eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-eyebrow::before { content: ''; display: block; width: 18px; height: 1px; background: var(--accent); }
+    .section-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 32px; }
+
+    /* ── WORK GRID ── */
+    .featured-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+    }
+    .featured-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+      display: block;
+    }
+    .featured-card:hover { border-color: rgba(0,0,0,0.18); transform: translateY(-2px); }
+    .video-placeholder {
+      background: #1a1612; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 10px; color: rgba(255,255,255,0.4);
+      font-size: 12px; font-weight: 500;
+      position: relative;
+    }
+    .play-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .video-label {
+      position: absolute; top: 12px; left: 12px;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      background: rgba(184,92,42,0.9); color: white;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .featured-card-body { padding: 20px 24px; }
+    .featured-card-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px;
+    }
+    .tag-video    { background: rgba(184,92,42,0.1); color: var(--accent); }
+    .tag-lifecycle { background: rgba(96,165,250,0.12); color: #2563eb; }
+    .tag-research  { background: rgba(22,163,74,0.12); color: #15803d; }
+    .tag-strategy  { background: rgba(124,58,237,0.12); color: #6d28d9; }
+    .tag-analytics { background: rgba(217,119,6,0.12); color: #b45309; }
+    .tag-template  { background: rgba(219,39,119,0.12); color: #be185d; }
+    .tag-creative  { background: rgba(0,0,0,0.07); color: var(--text-2); }
+    .featured-card-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .featured-card-desc  { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+
+    .work-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    }
+    .work-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 20px;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .work-card:hover { border-color: rgba(0,0,0,0.18); transform: translateY(-2px); }
+    .work-card-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+    .work-card-desc  { font-size: 11px; color: var(--text-2); line-height: 1.5; margin-bottom: 14px; }
+    .work-card-arrow { font-size: 14px; color: var(--text-3); align-self: flex-end; }
+
+    /* ── CREATIVE GALLERY ── */
+    .creative-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;
+    }
+    .creative-img {
+      border-radius: 12px; overflow: hidden;
+      aspect-ratio: 1; background: var(--bg-card2);
+      cursor: pointer; position: relative;
+    }
+    .creative-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .creative-img:hover img { transform: scale(1.04); }
+    .creative-img-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0); transition: background 0.2s;
+      display: flex; align-items: flex-end; padding: 14px;
+    }
+    .creative-img:hover .creative-img-overlay { background: rgba(0,0,0,0.35); }
+    .creative-img-label {
+      font-size: 11px; font-weight: 600; color: white;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .creative-img:hover .creative-img-label { opacity: 1; }
+
+    .deck-row { display: flex; gap: 12px; }
+    .deck-btn {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 20px;
+      text-decoration: none; color: var(--text);
+      font-size: 13px; font-weight: 600;
+      transition: background 0.15s;
+    }
+    .deck-btn:hover { background: var(--bg-card2); }
+    .deck-icon { font-size: 18px; }
+    .deck-meta { font-size: 10px; color: var(--text-3); margin-top: 1px; }
+
+    /* ── RECOGNITION ── */
+    .recognition-wrap {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    }
+    .recognition-photo {
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.1);
+    }
+    .recognition-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .recognition-content {}
+    .recognition-quote {
+      font-size: 18px; font-weight: 600; line-height: 1.55;
+      color: var(--text); margin-bottom: 24px; letter-spacing: -0.01em;
+      position: relative; padding-left: 20px;
+    }
+    .recognition-quote::before {
+      content: '"';
+      position: absolute; left: 0; top: -4px;
+      font-size: 40px; font-weight: 900; color: var(--accent); line-height: 1;
+    }
+    .recognition-attr {
+      border-top: 1px solid var(--border); padding-top: 20px; margin-bottom: 24px;
+    }
+    .recognition-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .recognition-role { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+    .recognition-univ {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,100,0,0.07); border: 1px solid rgba(0,100,0,0.12);
+      color: #166534; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 6px; margin-bottom: 20px;
+    }
+    .btn-letter {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--text); color: var(--bg);
+      font-size: 13px; font-weight: 700; padding: 12px 22px; border-radius: 8px;
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .btn-letter:hover { opacity: 0.82; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .footer-name { font-size: 14px; font-weight: 700; }
+    .footer-sub  { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+    .social-links { display: flex; gap: 12px; }
+    .social-link {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: var(--text-2); font-size: 14px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .social-link:hover { background: var(--bg-card2); color: var(--text); }
+    .footer-note { font-size: 10px; color: var(--text-3); }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.85);
+      display: none; align-items: center; justify-content: center;
+      padding: 32px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      color: white; font-size: 28px; cursor: pointer; line-height: 1;
+      background: none; border: none;
+    }
+
+    /* ── FADE IN ── */
+    .fade { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-photo { max-width: 320px; aspect-ratio: 1; }
+      .work-grid { grid-template-columns: 1fr 1fr; }
+      .featured-row { grid-template-columns: 1fr; }
+      .recognition-wrap { grid-template-columns: 1fr; }
+      .creative-grid { grid-template-columns: 1fr 1fr; }
+      nav { padding: 0 20px; }
+      section { padding: 48px 20px; }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-    <div class="header">
-        <div class="eyebrow">Work Samples · Product Marketing</div>
-        <h1>Pooja J</h1>
-        <p class="subtitle">Associate Product Marketing Manager · Frisco, TX<br>A collection of portfolio samples from MassMetric.</p>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Pooja J</a>
+  <ul class="nav-links">
+    <li><a href="#work" class="active">Work</a></li>
+    <li><a href="#creatives">Creatives</a></li>
+    <li><a href="#recognition">Recognition</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero fade">
+  <div class="hero-left">
+    <div class="hero-tag">Technical Product Marketing</div>
+    <h1>Translating complex products into market moments.</h1>
+    <p class="hero-sub">Product Marketer with hands-on experience across lifecycle campaigns, investor relations, NASDAQ press releases, and broadcast advertising — now building the story behind technical products that matter.</p>
+    <div class="hero-btns">
+      <a href="#work" class="btn-primary">View Work</a>
+      <a href="assets/guest-speaker-letter.pdf" target="_blank" class="btn-secondary">Guest Speaker Letter ↗</a>
     </div>
-    <div class="grid">
-        <a class="card" href="massmetric-adoption-email.html">
-            <div class="card-left">
-                <div class="card-tag tag-lifecycle">Lifecycle · Feature Activation</div>
-                <div class="card-title">Feature Adoption Email</div>
-                <div class="card-desc">Lifecycle email designed to activate dormant users on MassCompete, driving a 22% lift in feature utilization.</div>
-            </div>
-            <div class="card-arrow">→</div>
-        </a>
-        <a class="card" href="massmetric-pricing-framework.html">
-            <div class="card-left">
-                <div class="card-tag tag-strategy">Pricing Strategy</div>
-                <div class="card-title">Pricing Framework</div>
-                <div class="card-desc">Competitive pricing analysis and packaging framework for MassMetric's Growth and Enterprise tiers.</div>
-            </div>
-            <div class="card-arrow">→</div>
-        </a>
-        <a class="card" href="massmetric-winloss-summary.html">
-            <div class="card-left">
-                <div class="card-tag tag-research">Win/Loss Research</div>
-                <div class="card-title">Win/Loss Analysis</div>
-                <div class="card-desc">Synthesized win/loss interview findings to surface competitive positioning gaps and inform sales enablement.</div>
-            </div>
-            <div class="card-arrow">→</div>
-        </a>
-        <a class="card" href="pooja-campaign-dashboard.html">
-            <div class="card-left">
-                <div class="card-tag tag-analytics">Campaign Analytics</div>
-                <div class="card-title">Campaign Performance Dashboard</div>
-                <div class="card-desc">End-to-end campaign performance tracking across channels, segments, and funnel stages.</div>
-            </div>
-            <div class="card-arrow">→</div>
-        </a>
-        <a class="card" href="https://claude.ai/public/artifacts/9398145e-5a4d-4fbc-827a-72f7908f3dab" target="_blank" rel="noopener">
-            <div class="card-left">
-                <div class="card-tag tag-template">Email Design · Reusable Template</div>
-                <div class="card-title">Reusable Newsletter Template</div>
-                <div class="card-desc">A modular, reusable newsletter template built for consistent brand communication across campaigns.</div>
-            </div>
-            <div class="card-arrow">↗</div>
-        </a>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">48%</div>
+        <div class="stat-label">Email open rate<br>vs. 22% SaaS avg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">22%</div>
+        <div class="stat-label">Feature utilization<br>lift post-campaign</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num accent">CNBC</div>
+        <div class="stat-label">Broadcast ad<br>script & scenes</div>
+      </div>
     </div>
-    <div class="footer">Metrics illustrative · Jun 2023 – Aug 2024</div>
+  </div>
+  <div class="hero-photo">
+    <!-- Replace src with your headshot -->
+    <div class="hero-photo-placeholder">
+      <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>Your photo here</span>
+    </div>
+  </div>
 </div>
+
+<!-- AS SEEN ON -->
+<div class="seen-on-wrap">
+  <div class="seen-on-track">
+    <span class="seen-on-item"><span class="dot"></span>CNBC Broadcast Ad</span>
+    <span class="seen-on-item"><span class="dot"></span>NASDAQ: $LASE</span>
+    <span class="seen-on-item"><span class="dot"></span>Billboard Campaign</span>
+    <span class="seen-on-item"><span class="dot"></span>Stetson University</span>
+    <span class="seen-on-item"><span class="dot"></span>IR Press Releases</span>
+    <span class="seen-on-item"><span class="dot"></span>MassMetric Lifecycle</span>
+    <!-- duplicate for seamless loop -->
+    <span class="seen-on-item"><span class="dot"></span>CNBC Broadcast Ad</span>
+    <span class="seen-on-item"><span class="dot"></span>NASDAQ: $LASE</span>
+    <span class="seen-on-item"><span class="dot"></span>Billboard Campaign</span>
+    <span class="seen-on-item"><span class="dot"></span>Stetson University</span>
+    <span class="seen-on-item"><span class="dot"></span>IR Press Releases</span>
+    <span class="seen-on-item"><span class="dot"></span>MassMetric Lifecycle</span>
+  </div>
+</div>
+
+<!-- WORK SAMPLES -->
+<section id="work">
+  <div class="fade">
+    <div class="section-eyebrow">Work Samples</div>
+    <div class="section-title">Campaigns, strategy & analytics</div>
+  </div>
+
+  <!-- Featured: Video pieces -->
+  <div class="featured-row fade">
+    <div class="featured-card">
+      <div class="video-placeholder">
+        <span class="video-label">CNBC · 30s Broadcast Ad</span>
+        <div class="play-btn">▶</div>
+        <span>Add YouTube embed URL</span>
+      </div>
+      <div class="featured-card-body">
+        <div class="featured-card-tag tag-video">Video · Broadcast</div>
+        <div class="featured-card-title">CNBC TV Ad — Script &amp; Scene Direction</div>
+        <div class="featured-card-desc">Wrote the script and directed scene structure for a 30-second CNBC broadcast ad for Laser Photonics ($LASE). Managed messaging, pacing, and brand voice end-to-end.</div>
+      </div>
+    </div>
+    <div class="featured-card" href="pooja-campaign-dashboard.html">
+      <div class="video-placeholder">
+        <span class="video-label">Dashboard · Walkthrough</span>
+        <div class="play-btn">▶</div>
+        <span>Add dashboard recording URL</span>
+      </div>
+      <div class="featured-card-body">
+        <div class="featured-card-tag tag-analytics">Campaign Analytics</div>
+        <div class="featured-card-title">Campaign Performance Dashboard</div>
+        <div class="featured-card-desc">End-to-end campaign performance tracking across channels, segments, and funnel stages. Built for real-time marketing decisions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Work sample cards -->
+  <div class="work-grid fade">
+    <a class="work-card" href="massmetric-adoption-email.html">
+      <div>
+        <div class="featured-card-tag tag-lifecycle" style="margin-bottom:10px">Lifecycle</div>
+        <div class="work-card-title">Feature Adoption Email</div>
+        <div class="work-card-desc">Drove a 22% feature utilization lift for MassCompete. 48% open rate vs. 22% SaaS average.</div>
+      </div>
+      <div class="work-card-arrow">→</div>
+    </a>
+    <a class="work-card" href="massmetric-winloss-summary.html">
+      <div>
+        <div class="featured-card-tag tag-research" style="margin-bottom:10px">Win/Loss</div>
+        <div class="work-card-title">Win/Loss Analysis</div>
+        <div class="work-card-desc">Synthesized interview findings to surface competitive positioning gaps and fuel sales enablement.</div>
+      </div>
+      <div class="work-card-arrow">→</div>
+    </a>
+    <a class="work-card" href="massmetric-pricing-framework.html">
+      <div>
+        <div class="featured-card-tag tag-strategy" style="margin-bottom:10px">Pricing</div>
+        <div class="work-card-title">Pricing Framework</div>
+        <div class="work-card-desc">Competitive pricing analysis and packaging strategy for Growth and Enterprise tiers.</div>
+      </div>
+      <div class="work-card-arrow">→</div>
+    </a>
+    <a class="work-card" href="https://claude.ai/public/artifacts/9398145e-5a4d-4fbc-827a-72f7908f3dab" target="_blank">
+      <div>
+        <div class="featured-card-tag tag-template" style="margin-bottom:10px">Email Design</div>
+        <div class="work-card-title">Reusable Newsletter Template</div>
+        <div class="work-card-desc">Modular, brand-consistent newsletter template built for scalable campaign communications.</div>
+      </div>
+      <div class="work-card-arrow">↗</div>
+    </a>
+  </div>
+</section>
+
+<!-- CREATIVE WORK -->
+<section id="creatives" style="padding-top:0">
+  <div class="fade">
+    <div class="section-eyebrow">Creative Work</div>
+    <div class="section-title">Brand, advertising &amp; investor relations — Laser Photonics ($LASE)</div>
+  </div>
+
+  <div class="creative-grid fade">
+    <div class="creative-img" onclick="openLightbox('assets/artboard-think-lase.jpg')">
+      <img src="assets/artboard-think-lase.jpg" alt="Think Laser Think LASE brand ad">
+      <div class="creative-img-overlay"><span class="creative-img-label">Think Laser · Brand Ad</span></div>
+    </div>
+    <div class="creative-img" onclick="openLightbox('assets/invest-in-innovation.png')">
+      <img src="assets/invest-in-innovation.png" alt="Invest in Innovation IR creative">
+      <div class="creative-img-overlay"><span class="creative-img-label">Invest in Innovation · IR Creative</span></div>
+    </div>
+    <div class="creative-img" onclick="openLightbox('assets/artboard-think-quantum.png')">
+      <img src="assets/artboard-think-quantum.png" alt="Think Quantum LASE ad">
+      <div class="creative-img-overlay"><span class="creative-img-label">Think Quantum · Brand Ad</span></div>
+    </div>
+    <div class="creative-img" onclick="openLightbox('assets/twitter-stop-the-threat.png')">
+      <img src="assets/twitter-stop-the-threat.png" alt="Stop the Threat defense ad">
+      <div class="creative-img-overlay"><span class="creative-img-label">Stop the Threat · Defense Campaign</span></div>
+    </div>
+    <div class="creative-img" onclick="openLightbox('assets/twitter-2.png')">
+      <img src="assets/twitter-2.png" alt="Twitter ad 2">
+      <div class="creative-img-overlay"><span class="creative-img-label">LSAD Twitter Campaign</span></div>
+    </div>
+    <div class="creative-img" onclick="openLightbox('assets/twitter-3.png')">
+      <img src="assets/twitter-3.png" alt="Twitter ad 3">
+      <div class="creative-img-overlay"><span class="creative-img-label">LSAD Twitter Campaign</span></div>
+    </div>
+  </div>
+
+  <!-- Video embeds row -->
+  <div class="featured-row fade" style="margin-bottom:24px">
+    <div class="featured-card">
+      <div class="video-placeholder">
+        <span class="video-label">Twitter · 15s Ad</span>
+        <div class="play-btn">▶</div>
+        <span>Add YouTube embed URL</span>
+      </div>
+      <div class="featured-card-body">
+        <div class="featured-card-tag tag-creative">Social · Video Ad</div>
+        <div class="featured-card-title">Twitter 15s Ad — LASE</div>
+        <div class="featured-card-desc">Produced 15-second social video ad for LASE targeting defense and investor audiences on X/Twitter.</div>
+      </div>
+    </div>
+    <div class="featured-card">
+      <div class="video-placeholder">
+        <span class="video-label">Billboard · Campaign</span>
+        <div class="play-btn">▶</div>
+        <span>Add billboard video URL</span>
+      </div>
+      <div class="featured-card-body">
+        <div class="featured-card-tag tag-creative">OOH · Brand Campaign</div>
+        <div class="featured-card-title">Billboard Feature — Laser Photonics</div>
+        <div class="featured-card-desc">Laser Photonics brand featured on a physical billboard campaign. Led messaging strategy and creative direction behind the placement.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Presentations -->
+  <div class="deck-row fade">
+    <a class="deck-btn" href="assets/sofweek-2026.pptx" download>
+      <span class="deck-icon">📊</span>
+      <div>
+        <div>SOFWEEK 2026 Presentation</div>
+        <div class="deck-meta">LSAD · Defense Industry · Download PPTX</div>
+      </div>
+    </a>
+    <a class="deck-btn" href="assets/lase-presentation.pptx" download>
+      <span class="deck-icon">📋</span>
+      <div>
+        <div>LASE Website Deck</div>
+        <div class="deck-meta">Laser Photonics · Investor Facing · Download PPTX</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- RECOGNITION -->
+<section id="recognition">
+  <div class="fade">
+    <div class="section-eyebrow">Recognition</div>
+    <div class="section-title">Guest Speaker · Stetson University</div>
+  </div>
+  <div class="recognition-wrap fade">
+    <div class="recognition-photo">
+      <img src="assets/stetson-recognition.jpg" alt="Pooja Jeeva guest speaker at Stetson University">
+    </div>
+    <div class="recognition-content">
+      <div class="recognition-univ">🎓 Stetson University · Centurion Sales Program</div>
+      <div class="recognition-quote">
+        Her ability to connect with students at different levels of familiarity with the topic... maintained clarity and approached the material in a way that supported student learning. This balance is not easy to achieve.
+      </div>
+      <div class="recognition-attr">
+        <div class="recognition-name">Dr. John F. Riggs</div>
+        <div class="recognition-role">
+          Founding Executive Director, Centurion Sales Program<br>
+          Professor of Practice in Marketing<br>
+          School of Business Administration · Stetson University
+        </div>
+      </div>
+      <a href="assets/guest-speaker-letter.pdf" target="_blank" class="btn-letter">
+        Read the Full Letter ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div>
+    <div class="footer-name">Pooja Jeeva</div>
+    <div class="footer-sub">Product Marketing Manager · Frisco, TX</div>
+  </div>
+  <div class="social-links">
+    <!-- Replace # with your actual profile URLs -->
+    <a class="social-link" href="#" title="LinkedIn" target="_blank">in</a>
+    <a class="social-link" href="#" title="Twitter/X" target="_blank">𝕏</a>
+    <a class="social-link" href="#" title="Email">✉</a>
+  </div>
+  <div class="footer-note">Work samples · Metrics illustrative · 2023–2024</div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  // Fade-in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+  // Lightbox
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Active nav on scroll
+  const sections = document.querySelectorAll('section[id], footer[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+    navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+  });
+</script>
+
 </body>
 </html>
