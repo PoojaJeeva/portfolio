@@ -481,7 +481,9 @@
     @keyframes navDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
     /* ── HERO FLOAT ── */
-    .hero-photo { animation: float 7s ease-in-out infinite; }
+    @media (min-width: 901px) {
+      .hero-photo { animation: float 7s ease-in-out infinite; }
+    }
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50%       { transform: translateY(-14px); }
@@ -540,15 +542,113 @@
     .fade { opacity: 0; transform: translateY(16px); transition: opacity 0.55s ease, transform 0.55s ease; }
     .fade.visible { opacity: 1; transform: translateY(0); }
 
+    /* ── HAMBURGER NAV ── */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px; z-index: 60;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: translateX(-6px); }
+    .nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* ── TABLET (≤ 900px) ── */
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-photo { max-width: 320px; aspect-ratio: 1; }
-      .work-grid { grid-template-columns: 1fr 1fr; }
-      .featured-row { grid-template-columns: 1fr; }
-      .recognition-wrap { grid-template-columns: 1fr; }
-      .creative-grid { grid-template-columns: 1fr 1fr; }
       nav { padding: 0 20px; }
+      section { padding: 56px 24px; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 40px 24px 52px;
+        text-align: center;
+        gap: 32px;
+      }
+      .hero-left { order: 2; }
+      .hero-right { order: 1; width: 220px; margin: 0 auto; }
+      .hero-photo { aspect-ratio: 1; border-radius: 50%; }
+      .hero-photo-socials { justify-content: center; }
+      .hero h1 { font-size: 34px; }
+      .hero-sub { max-width: 100%; font-size: 14px; }
+      .hero-btns { justify-content: center; }
+      .hero-tag { display: inline-block; }
+      .hero-stats {
+        overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+        padding-bottom: 8px; gap: 10px;
+      }
+      .hero-stats::-webkit-scrollbar { display: none; }
+      .stat-card { flex: 0 0 200px; scroll-snap-align: start; }
+
+      .featured-row { grid-template-columns: 1fr; }
+      .work-grid { grid-template-columns: 1fr 1fr !important; }
+
+      .creative-intro { grid-template-columns: 1fr; gap: 20px; }
+      .creative-desc-text { font-size: 15px; }
+      .creative-img { flex: 0 0 72%; }
+
+      .recognition-wrap { grid-template-columns: 1fr; gap: 32px; }
+      .recognition-quote { font-size: 16px; }
+
+      .deck-row { flex-direction: column; }
+      .featured-row[style*="margin-bottom"] { gap: 14px; }
+    }
+
+    /* ── MOBILE (≤ 600px) ── */
+    @media (max-width: 600px) {
+      /* Nav → hamburger */
+      .nav-hamburger { display: flex; }
+      .nav-links {
+        display: none; position: fixed;
+        inset: 60px 0 0 0; z-index: 50;
+        background: rgba(240,235,228,0.97);
+        backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        flex-direction: column; align-items: center; justify-content: center;
+        gap: 36px; list-style: none;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 22px; font-weight: 700; color: var(--text); }
+
+      .announce-bar { font-size: 11px; padding: 10px 44px 10px 16px; text-align: left; }
+
+      .hero {
+        padding: 32px 20px 44px;
+        gap: 24px;
+      }
+      .hero-right { width: 180px; }
+      .hero h1 { font-size: 28px; letter-spacing: -0.025em; }
+      .hero-sub { font-size: 14px; }
+      .hero-btns { flex-direction: column; gap: 10px; }
+      .btn-primary, .btn-secondary { text-align: center; padding: 14px 20px; }
+
+      .section-title { font-size: 22px; }
+
+      .work-grid { grid-template-columns: 1fr !important; }
+      .work-card { padding: 16px 18px; }
+
+      .creative-img { flex: 0 0 85%; }
+      .creative-cats { gap: 8px; }
+
+      .recognition-photo { max-height: 300px; overflow: hidden; }
+
+      .footer-zone footer {
+        flex-direction: column; align-items: center;
+        gap: 20px; text-align: center; padding: 32px 20px;
+      }
+
       section { padding: 48px 20px; }
+
+      .deck-row { gap: 10px; }
+      .deck-btn { padding: 14px 16px; }
+    }
+
+    /* ── SMALL MOBILE (≤ 400px) ── */
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 24px; }
+      .hero-right { width: 160px; }
+      .stat-card { flex: 0 0 170px; }
     }
   </style>
 </head>
@@ -563,12 +663,15 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">Pooja Jeeva</a>
-  <ul class="nav-links">
-    <li><a href="#work" class="active">Work</a></li>
-    <li><a href="#creatives">Creatives</a></li>
-    <li><a href="#recognition">Recognition</a></li>
-    <li><a href="#contact">Contact</a></li>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#work" class="active" onclick="closeNav()">Work</a></li>
+    <li><a href="#creatives" onclick="closeNav()">Creatives</a></li>
+    <li><a href="#recognition" onclick="closeNav()">Recognition</a></li>
+    <li><a href="#contact" onclick="closeNav()">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -931,6 +1034,20 @@
 </div>
 
 <script>
+  /* ─── Hamburger nav ─── */
+  function toggleNav() {
+    const links = document.getElementById('navLinks');
+    const btn   = document.getElementById('navHamburger');
+    links.classList.toggle('open');
+    btn.classList.toggle('open');
+    document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeNav() {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('navHamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   /* ─── Banner ─── */
   function dismissBanner() {
     document.getElementById('announceBar').classList.add('hidden');
